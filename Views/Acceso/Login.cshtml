@@ -1,0 +1,94 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Avícola App</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .login-input {
+            background-color: #f0f2f5;
+            border: none;
+            height: 50px;
+            padding-left: 15px;
+        }
+
+            .login-input:focus {
+                background-color: #e4e6e9;
+                box-shadow: none;
+                border: 1px solid #0d6efd;
+            }
+
+        .bg-image-container {
+            /* Usamos @Url.Content para que C# busque la foto en tu carpeta wwwroot */ background-image: url('@Url.Content("~/img/amen.jpg")');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+
+            <div class="col-md-5 col-lg-4 d-flex align-items-center justify-content-center bg-white">
+                <div class="w-75">
+
+                    <div class="mb-5">
+                        <h2 class="fw-bold text-dark">Avícola App</h2>
+                        <p class="text-muted">Ingresá tus credenciales para acceder.</p>
+                    </div>
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger mb-4">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+                    <form action="/Acceso/Login" method="post">
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Correo Electrónico / Usuario</label>
+                            <input type="text" name="user" class="form-control login-input" placeholder="juan@gmail.com" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Contraseña</label>
+                            <input type="password" name="password" class="form-control login-input" placeholder="••••••••••••" required />
+                        </div>
+
+                        <div class="mb-4 form-check">
+                            <input type="checkbox" class="form-check-input" id="checkRecordar">
+                            <label class="form-check-label text-muted small" for="checkRecordar">Recordarme</label>
+                        </div>
+
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary py-2 fw-bold" style="background-color: #0d6efd;">Ingresar</button>
+                        </div>
+
+                        <div class="d-flex justify-content-between text-muted small">
+                            <a href="#" class="text-decoration-none text-muted">¿Olvidaste tu contraseña?</a>
+                            <a href="#" class="text-decoration-none fw-bold text-primary">Crear cuenta nueva</a>
+                        </div>
+
+                    </form>
+
+                    <div class="mt-5 text-center text-muted small">
+                        &copy; 2026 AvicolaApp - Sistema de Gestión
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7 col-lg-8 d-none d-md-block bg-image-container p-0">
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

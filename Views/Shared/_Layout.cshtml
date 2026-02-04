@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AvicolaApp</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AvicolaApp.styles.css" asp-append-version="true" />
+</head>
+<body>
+
+    <div class="d-flex" id="wrapper">
+
+        <div class="bg-white border-end" id="sidebar-wrapper">
+
+            <div class="sidebar-heading border-bottom bg-white d-flex align-items-center gap-2 p-3">
+                <i class="bi bi-egg-fill text-primary fs-4"></i>
+                <div class="fw-bold fs-5 text-dark">AvícolaApp</div>
+            </div>
+
+            <div class="list-group list-group-flush mt-3">
+                <a href="/Home/Index" class="list-group-item list-group-item-action border-0 py-3 active-menu">
+                    <i class="bi bi-columns-gap me-3"></i> Dashboard
+                </a>
+
+                <a href="#" class="list-group-item list-group-item-action border-0 py-3 d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-box-seam me-3"></i> Lotes</span>
+                    <span class="badge bg-danger rounded-pill">Alert</span>
+                </a>
+
+                <a href="#" class="list-group-item list-group-item-action border-0 py-3">
+                    <i class="bi bi-journal-text me-3"></i> Diario
+                </a>
+
+                <a href="#" class="list-group-item list-group-item-action border-0 py-3">
+                    <i class="bi bi-shop me-3"></i> Ventas
+                </a>
+            </div>
+
+            <div class="mt-auto p-3 border-top">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2" style="width: 32px; height: 32px;">
+                            JP
+                        </div>
+                        <strong>Juan Pérez</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                        <li><a class="dropdown-item" href="#">Configuración</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/Acceso/Salir">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-content-wrapper" class="w-100 bg-light">
+
+            <nav class="navbar navbar-light bg-light border-bottom px-4 justify-content-end py-3">
+                <button class="btn btn-light position-relative text-secondary">
+                    <i class="bi bi-bell fs-5"></i>
+                    <span class="position-absolute top-25 start-75 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                </button>
+            </nav>
+
+            <div class="container-fluid p-4">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

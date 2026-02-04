@@ -1,0 +1,179 @@
+﻿@model IEnumerable<AvicolaApp.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Listado de Usuarios";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-white bg-white border shadow-sm rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; text-decoration: none;">
+                <i class="bi bi-arrow-left text-dark"></i>
+            </a>
+            <div>
+                <h3 class="fw-bold text-dark mb-0">Usuarios</h3>
+                <p class="text-muted mb-0 small">Gestión de accesos del sistema.</p>
+            </div>
+        </div>
+
+        <button class="btn btn-primary fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario">
+            <i class="bi bi-plus-lg me-2"></i>Nuevo Usuario
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm border-top border-4 border-primary">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th class="py-3 ps-4">Fecha Alta</th>
+                            <th class="py-3">Usuario</th>
+                            <th class="py-3">Email</th>
+                            <th class="py-3 text-end pe-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4">@item.CreateDate.ToString("dd/MM/yyyy")</td>
+                                    <td class="fw-bold text-dark">@item.UserName</td>
+                                    <td>@item.UserEmail</td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-warning text-dark me-1"
+                                                title="Editar"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalEditarUsuario"
+                                                onclick="cargarDatosEditar('@item.Id', '@item.UserName', '@item.UserEmail')">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </button>
+
+                                        <button class="btn btn-sm btn-outline-danger"
+                                                title="Eliminar"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalEliminar"
+                                                onclick="cargarDatosEliminar('@item.Id')">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">No hay usuarios cargados.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalNuevoUsuario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Crear Nuevo Usuario</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form action="/Home/GuardarUsuario" method="post">
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nombre de Usuario</label>
+                        <input type="text" name="UserName" class="form-control" placeholder="Ej: Admin" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Correo Electrónico</label>
+                        <input type="email" name="UserEmail" class="form-control" placeholder="nombre@ejemplo.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Contraseña</label>
+                        <input type="password" name="Password" class="form-control" placeholder="******" required>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary fw-bold">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title fw-bold text-dark"><i class="bi bi-pencil-square me-2"></i>Editar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form action="/Home/EditarUsuario" method="post">
+                <input type="hidden" name="Id" id="editIdUsuario">
+
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nombre de Usuario</label>
+                        <input type="text" name="UserName" id="editUserName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Correo Electrónico</label>
+                        <input type="email" name="UserEmail" id="editUserEmail" class="form-control" required>
+                    </div>
+
+                    <div class="alert alert-info small mb-0">
+                        <i class="bi bi-info-circle me-1"></i> La contraseña no se puede editar desde aquí por seguridad.
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning fw-bold text-dark">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+
+            <form action="/Home/EliminarUsuario" method="post">
+                <input type="hidden" name="Id" id="deleteIdUsuario">
+
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3 text-danger">
+                        <i class="bi bi-exclamation-circle display-1"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">¿Estás seguro?</h4>
+                    <p class="text-muted mb-4">Esta acción borrará al usuario permanentemente y no se puede deshacer.</p>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger fw-bold">Si, Eliminar</button>
+                        <button type="button" class="btn btn-light text-muted" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function cargarDatosEditar(id, nombre, email) {
+        document.getElementById('editIdUsuario').value = id;
+        document.getElementById('editUserName').value = nombre;
+        document.getElementById('editUserEmail').value = email;
+    }
+
+    function cargarDatosEliminar(id) {
+        document.getElementById('deleteIdUsuario').value = id;
+    }
+</script>

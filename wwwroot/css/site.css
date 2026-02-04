@@ -1,0 +1,58 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+/* === ESTILOS DEL DASHBOARD === */
+
+body {
+    overflow-x: hidden; /* Evita scroll horizontal */
+}
+
+#wrapper {
+    min-height: 100vh; /* Ocupa toda la altura de la pantalla */
+}
+
+#sidebar-wrapper {
+    min-width: 250px;
+    max-width: 250px;
+    display: flex;
+    flex-direction: column; /* Para poner el perfil abajo del todo */
+}
+
+/* Estilo de los enlaces del menú */
+.list-group-item {
+    font-weight: 500;
+    color: #6c757d; /* Gris suave */
+    background-color: transparent;
+}
+
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+        color: #0d6efd; /* Azul al pasar el mouse */
+    }
+
+/* Estilo del item activo (El que tiene la barrita azul a la izquierda) */
+.active-menu {
+    color: #0d6efd !important;
+    background-color: #e6f0ff !important; /* Azul muy clarito de fondo */
+    border-left: 4px solid #0d6efd !important;
+    font-weight: bold;
+}
+
+#page-content-wrapper {
+    width: 100%;
+}

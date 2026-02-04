@@ -1,0 +1,266 @@
+﻿@{
+    ViewData["Title"] = "Cartera de Clientes";
+}
+
+<style>
+    .hover-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+
+    .btn-gradient {
+        background: linear-gradient(45deg, #4e73df, #224abe);
+        border: none;
+        color: white;
+    }
+
+        .btn-gradient:hover {
+            background: linear-gradient(45deg, #224abe, #4e73df);
+            color: white;
+        }
+
+    .btn-action {
+        transition: all 0.2s;
+    }
+
+        .btn-action:hover {
+            background-color: #eef2f7;
+            transform: scale(1.1);
+        }
+    /* Clase extra para el botón flotante de editar */
+    .hover-scale:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="container-fluid" style="background-color: #f0f2f5; min-height: 100vh; padding-bottom: 3rem;">
+
+    <div class="d-flex align-items-center justify-content-between mb-4 pt-4">
+        <div class="d-flex align-items-center">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-white bg-white border-0 shadow-sm rounded-circle me-3 d-flex align-items-center justify-content-center hover-lift" style="width: 45px; height: 45px;">
+                <i class="bi bi-arrow-left text-primary fs-5"></i>
+            </a>
+            <div>
+                <h3 class="fw-bold text-dark mb-0" style="letter-spacing: -0.5px;">Clientes</h3>
+                <p class="text-muted mb-0 small">Gestión comercial y cuentas corrientes.</p>
+            </div>
+        </div>
+
+        <button class="btn btn-gradient shadow fw-bold px-4 py-2 rounded-pill hover-lift" data-bs-toggle="modal" data-bs-target="#modalNuevoCliente">
+            <i class="bi bi-plus-lg me-2"></i>Nuevo Cliente
+        </button>
+    </div>
+
+    <div class="bg-white p-3 rounded-4 shadow-sm mb-4 border-start border-4 border-primary">
+        <form class="row g-3 align-items-center" action="@Url.Action("Clientes", "Home")" method="get">
+            <div class="col-md-4">
+                <label class="form-label small fw-bold text-uppercase text-primary ms-2 mb-1" style="font-size: 0.7rem;">Buscar</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-0 rounded-start-pill ps-3"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" name="busqueda" class="form-control bg-light border-0 rounded-end-pill py-2" placeholder="Nombre, Razón Social...">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-bold text-uppercase text-primary ms-2 mb-1" style="font-size: 0.7rem;">Zona</label>
+                <select name="zona" class="form-select bg-light border-0 rounded-pill px-3 py-2" style="cursor: pointer;">
+                    <option selected value="">Todas las zonas</option>
+                    <option value="Centro">Centro</option>
+                    <option value="Norte">Norte</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-bold text-uppercase text-primary ms-2 mb-1" style="font-size: 0.7rem;">Estado</label>
+                <select name="estado" class="form-select bg-light border-0 rounded-pill px-3 py-2" style="cursor: pointer;">
+                    <option selected value="">Todos</option>
+                    <option value="1">🟢 Al día</option>
+                    <option value="2">🔴 Deudores</option>
+                </select>
+            </div>
+            <div class="col-md-2 text-end mt-4">
+                <a href="@Url.Action("Clientes", "Home")" class="btn btn-light text-primary border-0 small fw-bold rounded-pill px-3 hover-lift">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div class="card border-0 shadow rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0" style="border-collapse: separate; border-spacing: 0;">
+                <thead class="bg-light">
+                    <tr class="text-secondary small text-uppercase" style="font-size: 0.75rem; letter-spacing: 1px;">
+                        <th class="py-3 ps-4 fw-bold border-0">Cliente</th>
+                        <th class="py-3 fw-bold border-0">Contacto</th>
+                        <th class="py-3 fw-bold border-0">Tipo</th>
+                        <th class="py-3 fw-bold border-0">Saldo Cta. Cte.</th>
+                        <th class="py-3 fw-bold border-0 text-end pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    <tr class="hover-bg-light transition-base" style="transition: background-color 0.2s;">
+                        <td class="ps-4 border-bottom py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold me-3 text-white shadow-sm"
+                                     style="width: 48px; height: 48px; background: linear-gradient(135deg, #4e73df, #224abe);">
+                                    EP
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark" style="font-size: 1rem;">Pollería El Pollito</div>
+                                    <div class="small text-muted font-monospace"><i class="bi bi-person-vcard me-1"></i>20-33445566-9</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="border-bottom py-3">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bold text-dark">Longchamps</span>
+                                <span class="text-success small"><i class="bi bi-whatsapp me-1"></i> 11-4455-6677</span>
+                            </div>
+                        </td>
+                        <td class="border-bottom py-3">
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10 rounded-pill px-3 py-2">
+                                Mayorista
+                            </span>
+                        </td>
+                        <td class="border-bottom py-3">
+                            <div class="d-inline-flex align-items-center px-3 py-1 rounded-pill bg-danger bg-opacity-10 border border-danger border-opacity-10">
+                                <div class="me-2 text-danger fw-bold">$ -150.000</div>
+                                <i class="bi bi-exclamation-circle-fill text-danger"></i>
+                            </div>
+                        </td>
+                        <td class="text-end pe-4 border-bottom py-3">
+                            <button class="btn btn-white text-secondary btn-action rounded-circle shadow-sm me-1" title="Ver Cuenta Corriente"><i class="bi bi-wallet2"></i></button>
+                            <button class="btn btn-white text-primary btn-action rounded-circle shadow-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEditarCliente"
+                                    title="Editar Cliente">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalNuevoCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0 pb-0 ps-4 pt-4 bg-white rounded-top-4">
+                <h5 class="modal-title fw-bold text-primary"><i class="bi bi-person-plus-fill me-2"></i>Nuevo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form action="/Home/GuardarCliente" method="post">
+                <div class="modal-body p-4 bg-white">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">NOMBRE / RAZÓN SOCIAL</label>
+                        <input type="text" name="Nombre" class="form-control bg-light border-0 rounded-3 py-2" placeholder="Ej: Avícola San Martín" required>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">CUIT</label>
+                            <input type="text" name="Cuit" class="form-control bg-light border-0 rounded-3 py-2" placeholder="Ej: 20-12345678-9">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">TELÉFONO</label>
+                            <input type="text" name="Telefono" class="form-control bg-light border-0 rounded-3 py-2" placeholder="Ej: 11-5566-7788">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-secondary">TIPO DE CLIENTE</label>
+                        <div class="d-flex gap-2">
+                            <input type="radio" class="btn-check" name="Tipo" id="t1" value="Mayorista" checked>
+                            <label class="btn btn-outline-primary rounded-pill flex-fill fw-bold small py-2" for="t1">Mayorista</label>
+
+                            <input type="radio" class="btn-check" name="Tipo" id="t2" value="Revendedor">
+                            <label class="btn btn-outline-purple rounded-pill flex-fill fw-bold small py-2" for="t2" style="color: #6f42c1; border-color: #6f42c1;">Revendedor</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 pe-4 pb-4 bg-white rounded-bottom-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold hover-lift" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-gradient rounded-pill px-4 fw-bold shadow hover-lift">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+
+            <div class="modal-header border-0 p-3" style="background: linear-gradient(135deg, #f6c23e, #dfa000);">
+                <div class="d-flex align-items-center text-white">
+                    <div class="bg-white bg-opacity-25 rounded-circle p-2 me-3">
+                        <i class="bi bi-pencil-square fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0 text-dark fs-6">Editar Cliente</h5>
+                        <p class="mb-0 text-dark opacity-75 small">Modificando datos existentes</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form action="/Home/EditarCliente" method="post">
+                <input type="hidden" name="Id" value="1" />
+
+                <div class="modal-body p-4 bg-white">
+                    <div class="d-flex justify-content-between align-items-center mb-3 p-2 bg-light rounded-3 border">
+                        <span class="small fw-bold text-muted">ESTADO DE CUENTA</span>
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input" type="checkbox" name="Activo" role="switch" id="switchActivo" checked style="cursor: pointer;" value="true">
+                            <label class="form-check-label fw-bold text-success small" for="switchActivo">ACTIVO</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">RAZÓN SOCIAL</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i class="bi bi-building"></i></span>
+                            <input type="text" name="Nombre" class="form-control bg-light border-0 fw-bold text-dark" value="Pollería El Pollito">
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-muted">CUIT</label>
+                            <input type="text" name="Cuit" class="form-control bg-light border-0" value="20-33445566-9">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-muted">CONTACTO</label>
+                            <input type="text" name="Telefono" class="form-control bg-light border-0" value="11-4455-6677">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">DIRECCIÓN</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i class="bi bi-geo-alt"></i></span>
+                            <input type="text" name="Direccion" class="form-control bg-light border-0" value="Av. Hipólito Yrigoyen 18200">
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-warning bg-opacity-10 rounded-3 border border-warning border-opacity-25">
+                        <label class="form-label small fw-bold text-dark mb-1"><i class="bi bi-sticky me-1"></i>NOTA INTERNA</label>
+                        <textarea name="Nota" class="form-control bg-transparent border-0 p-0 text-dark small" rows="2">Cliente preferencial. Se le hace descuento del 5% por pago en efectivo.</textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 p-3 bg-light">
+                    <button type="button" class="btn btn-white border rounded-pill px-4 fw-bold shadow-sm small" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold shadow text-dark hover-scale small">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
