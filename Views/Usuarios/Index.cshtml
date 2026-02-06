@@ -31,6 +31,7 @@
                             <th class="py-3 ps-4">Fecha Alta</th>
                             <th class="py-3">Usuario</th>
                             <th class="py-3">Email</th>
+                            <th class="py-3">Rol</th>
                             <th class="py-3 text-end pe-4">Acciones</th>
                         </tr>
                     </thead>
@@ -43,13 +44,17 @@
                                     <td class="ps-4">@item.CreateDate.ToString("dd/MM/yyyy")</td>
                                     <td class="fw-bold text-dark">@item.UserName</td>
                                     <td>@item.UserEmail</td>
+                                    <td>@item.RolId</td>
                                     <td class="text-end pe-4">
-                                        <button class="btn btn-sm btn-outline-warning text-dark me-1"
-                                                title="Editar"
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modalEditarUsuario"
-                                                onclick="cargarDatosEditar('@item.Id', '@item.UserName', '@item.UserEmail')">
-                                            <i class="bi bi-pencil-fill"></i>
+                                                data-user-id="@item.Id"
+                                                data-user-name="@item.UserName"
+                                                data-user-email="@item.UserEmail"
+                                                data-user-rol="@item.RolId">
+                                            <i class="bi bi-pencil"></i>
                                         </button>
 
                                         <button class="btn btn-sm btn-outline-danger"
@@ -84,19 +89,33 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
-            <form action="/Home/GuardarUsuario" method="post">
-                <div class="modal-body p-4">
+            <form action="@Url.Action("GuardarUsuario", "Usuarios")" method="post" autocomplete="off">
+                <div class="modal-body p-4 bg-white">
+
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Nombre de Usuario</label>
-                        <input type="text" name="UserName" class="form-control" placeholder="Ej: Admin" required>
+                        <label class="form-label small fw-bold text-secondary">USUARIO</label>
+                        <input type="text" name="UserName" class="form-control bg-light border-0" required autocomplete="none">
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Correo Electrónico</label>
-                        <input type="email" name="UserEmail" class="form-control" placeholder="nombre@ejemplo.com" required>
+                        <label class="form-label small fw-bold text-secondary">CORREO ELECTRÓNICO</label>
+                        <input type="email" name="UserEmail" class="form-control bg-light border-0" required autocomplete="none">
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Contraseña</label>
-                        <input type="password" name="Password" class="form-control" placeholder="******" required>
+                        <label class="form-label small fw-bold text-secondary">ASIGNAR ROL</label>
+                        <select name="RolId" class="form-select bg-light border-0 py-2" required>
+                            <option value="" selected disabled>Seleccione un rol...</option>
+                            @foreach (var rol in ViewBag.Roles)
+                            {
+                                <option value="@rol.Id">@rol.Nombre</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">CONTRASEÑA</label>
+                        <input type="password" name="Password" class="form-control bg-light border-0" required autocomplete="new-password">
                     </div>
                 </div>
                 <div class="modal-footer bg-light">
@@ -110,34 +129,60 @@
 
 <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0">
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title fw-bold text-dark"><i class="bi bi-pencil-square me-2"></i>Editar Usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <div class="modal-header bg-primary text-white border-0 ps-4 pt-4 rounded-top-4">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-pencil-square me-2"></i>Editar Usuario
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
-            <form action="/Home/EditarUsuario" method="post">
-                <input type="hidden" name="Id" id="editIdUsuario">
+            <form action="@Url.Action("EditarUsuario", "Usuarios")" method="post">
+                <input type="hidden" name="Id" id="editUserId">
 
-                <div class="modal-body p-4">
+                <div class="modal-body p-4 bg-white">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Nombre de Usuario</label>
-                        <input type="text" name="UserName" id="editUserName" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Correo Electrónico</label>
-                        <input type="email" name="UserEmail" id="editUserEmail" class="form-control" required>
+                        <label class="form-label small fw-bold text-secondary">Nombre de Usuario</label>
+                        <input type="text" name="UserName" id="editUserName" class="form-control bg-light border-0" required>
                     </div>
 
-                    <div class="alert alert-info small mb-0">
-                        <i class="bi bi-info-circle me-1"></i> La contraseña no se puede editar desde aquí por seguridad.
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Correo Electrónico</label>
+                        <input type="email" name="UserEmail" id="editUserEmail" class="form-control bg-light border-0" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary text-uppercase">Rol del Usuario</label>
+                        <select name="RolId" id="editRolId" class="form-select bg-light border-0 py-2" required>
+                            @if (ViewBag.Roles != null)
+                            {
+                                foreach (var rol in ViewBag.Roles)
+                                {
+                                    <option value="@rol.Id">@rol.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="alert alert-info d-flex align-items-center border-0 rounded-3 bg-info-subtle text-info-emphasis" role="alert">
+                        <i class="bi bi-info-circle-fill flex-shrink-0 me-2"></i>
+                        <div class="small fw-semibold">
+                            La contraseña no se puede editar desde aquí por seguridad.
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-warning fw-bold text-dark">Guardar Cambios</button>
+
+                <div class="modal-footer border-0 pe-4 pb-4 bg-white rounded-bottom-4 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4 fw-bold border-0" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow hover-scale">
+                        Guardar Cambios
+                    </button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -167,11 +212,23 @@
 </div>
 
 <script>
-    function cargarDatosEditar(id, nombre, email) {
-        document.getElementById('editIdUsuario').value = id;
-        document.getElementById('editUserName').value = nombre;
-        document.getElementById('editUserEmail').value = email;
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        var modalEditarUsuario = document.getElementById('modalEditarUsuario');
+
+        modalEditarUsuario.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+
+            var userId = button.getAttribute('data-user-id');
+            var userName = button.getAttribute('data-user-name');
+            var userEmail = button.getAttribute('data-user-email');
+            var userRolId = button.getAttribute('data-user-rol');
+
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editUserName').value = userName;
+            document.getElementById('editUserEmail').value = userEmail;
+            document.getElementById('editRolId').value = userRolId;
+        });
+    });
 
     function cargarDatosEliminar(id) {
         document.getElementById('deleteIdUsuario').value = id;

@@ -29,6 +29,7 @@ namespace AvicolaApp.Controllers
         public async Task<IActionResult> Login(string user, string password)
         {
             var usuario = await _context.Usuarios
+                                 .Include(u => u.Rol)
                                         .FirstOrDefaultAsync(u => u.UserName == user || u.UserEmail == user);
 
             if (usuario == null || usuario.Password != password)
@@ -40,7 +41,8 @@ namespace AvicolaApp.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, usuario.UserName),
-                new Claim(ClaimTypes.Email, usuario.UserEmail)
+                new Claim(ClaimTypes.Email, usuario.UserEmail),
+                new Claim(ClaimTypes.Role, usuario.Rol.Nombre)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -51,6 +53,18 @@ namespace AvicolaApp.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public IActionResult Denegado()
+        {
+            return View();
+        }
+
+        //[HttpGet]
+        //public IActionResult Register()
+        //{
+        //    return View("Views/Register/Register.cshtml");
+        //}
 
         public async Task<IActionResult> Salir()
         {

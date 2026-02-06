@@ -15,5 +15,11 @@ namespace AvicolaApp.Models
         public string Password { get; set; }
 
         public DateTime CreateDate { get; set; }
+
+        [Required]
+        public int RolId { get; set; }
+
+        [ForeignKey("RolId")]
+        public virtual Rol Rol { get; set; } = null!;
     }
 }

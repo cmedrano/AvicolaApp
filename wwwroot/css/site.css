@@ -56,3 +56,35 @@ body {
 #page-content-wrapper {
     width: 100%;
 }
+/* === ESTILOS DEL LOGIN === */
+
+.login-image-container {
+    /* 1. Aplicamos la imagen directamente al contenedor */
+    background-image: url('/img/avisur.jpg');
+    /* 2. 'cover' hace que la imagen cubra TODO el espacio */
+    background-size: cover;
+    /* 3. Centramos la imagen para que el logo quede bien ubicado */
+    background-position: center;
+    background-repeat: no-repeat;
+    /* 4. Importante: Quitamos el padding y el color de fondo */
+    padding: 0;
+    background-color: transparent;
+    /* Asegura que ocupe toda la altura de su columna */
+    height: 100%;
+}
+
+/*.login-image-container::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85%;*/ /* Un poco más grande para que luzca */
+        /*max-width: 600px;
+        height: 85%;
+        max-height: 600px;
+        background-image: url('/img/avisur.jpg');
+        background-size: contain;*/ /* Para que la gallina no se corte */
+        /*background-position: center;
+        background-repeat: no-repeat;
+}*/

@@ -1,7 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+using AvicolaApp.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using AvicolaApp.Data; // Asegúrate de que esto coincida con tus carpetas
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -14,6 +16,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(option =>
     {
         option.LoginPath = "/Acceso/Login";
+        option.AccessDeniedPath = "/Acceso/Denegado";
         option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });
 

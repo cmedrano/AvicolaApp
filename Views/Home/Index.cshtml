@@ -9,31 +9,36 @@
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
 
-    <div class="col">
-        <div class="card h-100 border-0 shadow-sm border-start border-4 border-primary">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="fw-bold text-dark mb-0">Usuarios del Sistema</h5>
-                        <small class="text-muted">Administradores y Operarios</small>
+    @* Solo mostrar Usuarios del Sistema si es Administrador *@
+    @if (User.IsInRole("Administrador"))
+    {
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm border-start border-4 border-primary">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 class="fw-bold text-dark mb-0">Usuarios del Sistema</h5>
+                            <small class="text-muted">Administradores y Operarios</small>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-people-fill fs-4"></i>
+                        </div>
                     </div>
-                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                        <i class="bi bi-people-fill fs-4"></i>
+
+                    <h1 class="display-4 fw-bold text-dark mb-3">@ViewBag.TotalUsuarios</h1>
+
+                    <div class="mt-auto d-flex gap-2">
+                        <a href="@Url.Action("Index", "Usuarios")" class="btn btn-secondary flex-grow-1">Ver Todos</a>
+                        <button type="button" class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario">
+                            <i class="bi bi-person-plus-fill"></i> Nuevo Usuario
+                        </button>
                     </div>
-                </div>
-
-                <h1 class="display-4 fw-bold text-dark mb-3">4</h1>
-
-                <div class="mt-auto d-flex gap-2">
-                    <a href="@Url.Action("Usuarios", "Home")" class="btn btn-secondary flex-grow-1">Ver Todos</a>
-                    <button type="button" class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario">
-                        <i class="bi bi-person-plus-fill"></i> Nuevo Usuario
-                    </button>
                 </div>
             </div>
         </div>
-    </div>
+    }
 
+    @* Cartera de Clientes - visible para todos *@
     <div class="col">
         <div class="card h-100 border-0 shadow-sm border-start border-4" style="border-color: #6610f2 !important;">
             <div class="card-body d-flex flex-column">
@@ -47,10 +52,10 @@
                     </div>
                 </div>
 
-                <h1 class="display-4 fw-bold text-dark mb-3">145</h1>
+                <h1 class="display-4 fw-bold text-dark mb-3">@ViewBag.TotalClientes</h1>
 
                 <div class="mt-auto d-flex gap-2">
-                    <a href="@Url.Action("Clientes", "Home")" class="btn btn-secondary flex-grow-1">Ver Directorio</a>
+                    <a href="@Url.Action("Index", "Clientes")" class="btn btn-secondary flex-grow-1">Ver Todos</a>
                     <button type="button" class="btn text-white flex-grow-1" style="background-color: #6610f2;" data-bs-toggle="modal" data-bs-target="#modalNuevoCliente">
                         <i class="bi bi-person-plus-fill"></i> Nuevo
                     </button>
@@ -59,98 +64,102 @@
         </div>
     </div>
 
-    <div class="col">
-        <div class="card h-100 border-0 shadow-sm border-start border-4 border-warning">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="fw-bold text-dark mb-0">Silo de Alimento</h5>
-                        <small class="text-muted">Stock estimado</small>
-                    </div>
-                    <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                        <i class="bi bi-align-bottom fs-4"></i>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <h3 class="fw-bold text-dark mb-1">40% Lleno</h3>
-                    <div class="progress" style="height: 10px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"></div>
-                    </div>
-                </div>
-
-                <div class="mt-auto d-flex gap-2">
-                    <a href="#" class="btn btn-secondary flex-grow-1">Consumo</a>
-                    <a href="#" class="btn btn-warning flex-grow-1 text-dark fw-bold">Pedir Carga</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col">
-        <div class="card h-100 border-0 shadow-sm border-start border-4 border-success">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="fw-bold text-dark mb-0">Ventas del Mes</h5>
-                        <small class="text-muted">Últimas operaciones</small>
-                    </div>
-                    <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                        <i class="bi bi-graph-up-arrow fs-4"></i>
-                    </div>
-                </div>
-
-                <ul class="list-unstyled mb-3 small text-muted">
-                    <li class="d-flex justify-content-between border-bottom pb-1 mb-1">
-                        <span>Venta #123 - Mayorista A</span>
-                        <span class="fw-bold text-dark">$500k</span>
-                    </li>
-                    <li class="d-flex justify-content-between border-bottom pb-1 mb-1">
-                        <span>Venta #124 - Local Centro</span>
-                        <span class="fw-bold text-dark">$300k</span>
-                    </li>
-                    <li class="d-flex justify-content-between">
-                        <span>Venta #125 - Resto Bar</span>
-                        <span class="fw-bold text-dark">$400k</span>
-                    </li>
-                </ul>
-
-                <div class="mt-auto">
-                    <a href="#" class="btn btn-secondary w-100">Ver Todas las Ventas</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
-<div class="modal fade" id="modalNuevoUsuario" tabindex="-1" aria-hidden="true">
+@* Modal Nuevo Usuario - Solo para Administradores *@
+@if (User.IsInRole("Administrador"))
+{
+    <div class="modal fade" id="modalNuevoUsuario" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-person-plus-fill me-2"></i>Crear Nuevo Usuario
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form action="/Usuarios/GuardarUsuario" method="post" autocomplete="off">
+                    <div class="modal-body p-4 bg-white">
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">USUARIO</label>
+                            <input type="text" name="UserName" class="form-control bg-light border-0" required autocomplete="none">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">CORREO ELECTRÓNICO</label>
+                            <input type="email" name="UserEmail" class="form-control bg-light border-0" required autocomplete="none">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">CONTRASEÑA</label>
+                            <input type="password" name="Password" class="form-control bg-light border-0" required autocomplete="new-password">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">ASIGNAR ROL</label>
+                            <select name="RolId" class="form-select bg-light border-0 py-2" required>
+                                <option value="" selected disabled>Seleccione un rol...</option>
+                                @foreach (var rol in ViewBag.Roles)
+                                {
+                                    <option value="@rol.Id">@rol.Nombre</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-bold">Guardar Usuario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@* Modal Nuevo Cliente - Visible para todos *@
+<div class="modal fade" id="modalNuevoCliente" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-bold">
-                    <i class="bi bi-person-plus-fill me-2"></i>Crear Nuevo Usuario
-                </h5>
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0 pb-0 ps-4 pt-4 rounded-top-4" style="background-color: #6f42c1; color: white;">
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Nuevo Cliente</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-
-            <form action="/Home/GuardarUsuario" method="post">
-                <div class="modal-body p-4">
+            <form action="@Url.Action("GuardarCliente", "Clientes")" method="post">
+                <div class="modal-body p-4 bg-white">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Usuario</label>
-                        <input type="text" name="UserName" class="form-control" placeholder="Ej: AdminJuan" required>
+                        <label class="form-label small fw-bold text-secondary">NOMBRE / RAZÓN SOCIAL</label>
+                        <input type="text" name="NombreRazonSocial" class="form-control bg-light border-0 rounded-3 py-2" required>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">CUIT</label>
+                            <input type="text" name="Cuit" class="form-control bg-light border-0 rounded-3 py-2" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">TELÉFONO</label>
+                            <input type="text" name="Telefono" class="form-control bg-light border-0 rounded-3 py-2">
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Correo Electrónico</label>
-                        <input type="email" name="UserEmail" class="form-control" placeholder="juan@avicola.com" required>
+                        <label class="form-label small fw-bold text-secondary">LOCALIDAD</label>
+                        <input type="text" name="Localidad" class="form-control bg-light border-0 rounded-3 py-2">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Contraseña</label>
-                        <input type="password" name="Password" class="form-control" placeholder="******" required>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-secondary">TIPO DE CLIENTE</label>
+                        <div class="d-flex gap-2">
+                            <input type="radio" class="btn-check" name="TipoCliente" id="tn1" value="Mayorista" checked>
+                            <label class="btn rounded-pill flex-fill fw-bold small py-2" for="tn1" style="border: 2px solid #6f42c1; color: #6f42c1;">Mayorista</label>
+                            <input type="radio" class="btn-check" name="TipoCliente" id="tn2" value="Revendedor">
+                            <label class="btn rounded-pill flex-fill fw-bold small py-2" for="tn2" style="border: 2px solid #6f42c1; color: #6f42c1;">Revendedor</label>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary fw-bold">Guardar Usuario</button>
+                <div class="modal-footer border-0 pe-4 pb-4 bg-white rounded-bottom-4 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-light text-secondary rounded-pill px-4 fw-bold hover-danger shadow-sm border-0" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn rounded-pill px-4 fw-bold shadow hover-scale" style="background-color: #6f42c1; color: white;">Guardar</button>
                 </div>
             </form>
         </div>
@@ -180,61 +189,8 @@
         border-color: #6f42c1;
     }
 
-        .btn-outline-purple:hover, .btn-check:checked + .btn-outline-purple {
-            background-color: #6f42c1;
-            color: white;
-        }
+    .btn-outline-purple:hover, .btn-check:checked + .btn-outline-purple {
+        background-color: #6f42c1;
+        color: white;
+    }
 </style>
-
-<div class="modal fade" id="modalNuevoCliente" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-
-            <div class="modal-header border-0 pb-0 ps-4 pt-4 bg-white rounded-top-4">
-                <h5 class="modal-title fw-bold text-primary"><i class="bi bi-person-plus-fill me-2"></i>Nuevo Cliente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <form action="/Home/GuardarCliente" method="post">
-                <div class="modal-body p-4 bg-white">
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">NOMBRE / RAZÓN SOCIAL</label>
-                        <input type="text" name="Nombre" class="form-control bg-light border-0 rounded-3 py-2" placeholder="Ej: Avícola San Martín" required>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">CUIT</label>
-                            <input type="text" name="Cuit" class="form-control bg-light border-0 rounded-3 py-2" placeholder="20-12345678-9">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">TELÉFONO</label>
-                            <input type="text" name="Telefono" class="form-control bg-light border-0 rounded-3 py-2" placeholder="11-5566-7788">
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-secondary">TIPO DE CLIENTE</label>
-                        <div class="d-flex gap-2">
-                            <input type="radio" class="btn-check" name="Tipo" id="t1" value="Mayorista" checked>
-                            <label class="btn btn-outline-primary rounded-pill flex-fill fw-bold small py-2" for="t1">Mayorista</label>
-
-                            <input type="radio" class="btn-check" name="Tipo" id="t2" value="Revendedor">
-                            <label class="btn btn-outline-purple rounded-pill flex-fill fw-bold small py-2" for="t2">Revendedor</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer border-0 pe-4 pb-4 bg-white rounded-bottom-4 d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-light text-secondary rounded-pill px-4 fw-bold hover-danger shadow-sm border-0" data-bs-dismiss="modal" style="transition: all 0.3s;">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="btn btn-gradient rounded-pill px-4 fw-bold shadow hover-scale" style="transition: all 0.3s;">
-                        Guardar
-                    </button>
-                </div>
-            </form>
-
-        </div>
-    </div>
-</div>

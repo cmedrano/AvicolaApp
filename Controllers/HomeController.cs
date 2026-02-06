@@ -19,27 +19,22 @@ namespace AvicolaApp.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            int totalClientes = await _context.Clientes.CountAsync();
+            ViewBag.TotalClientes = totalClientes;
+
+            int totalUsuarios = await _context.Usuarios.CountAsync();
+            ViewBag.TotalUsuarios = totalUsuarios;
+
+            var roles = await _context.Roles.ToListAsync();
+            ViewBag.Roles = roles;
+
             return View();
         }
+        public IActionResult Privacy() => View();
+        public IActionResult Clientes() => View();
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> Usuarios()
-        {
-            // Busca todos los usuarios en la BD y los manda a la vista
-            var listaUsuarios = await _context.Usuarios.ToListAsync();
-            return View(listaUsuarios);
-        }
-
-        public IActionResult Clientes()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

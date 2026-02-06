@@ -1,0 +1,278 @@
+﻿@model IEnumerable<AvicolaApp.Models.Cliente>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center gap-3">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-white border rounded-circle shadow-sm d-flex align-items-center justify-content-center text-decoration-none" style="width: 45px; height: 45px;">
+            <i class="bi bi-arrow-left text-purple fs-5" style="color: #6f42c1;"></i>
+        </a>
+        <div>
+            <h2 class="fw-bold mb-0">Clientes</h2>
+            <p class="text-secondary mb-0">Gestión comercial y cuentas corrientes.</p>
+        </div>
+    </div>
+    <button type="button" class="btn btn-purple rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNuevoCliente" style="background-color: #6f42c1; color: white;">
+        + Nuevo Cliente
+    </button>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4">
+        <form class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label small fw-bold mb-1" style="color: #6f42c1;">BUSCAR</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-0 rounded-start-3 ps-3"><i class="bi bi-search text-secondary"></i></span>
+                    <input type="text" class="form-control bg-light border-0 rounded-end-3 py-2">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label small fw-bold mb-1" style="color: #6f42c1;">ZONA</label>
+                <select class="form-select bg-light border-0 rounded-3 py-2">
+                    <option selected>Todas las zonas</option>
+                    <option value="1">Longchamps</option>
+                    <option value="2">Burzaco</option>
+                    <option value="3">Glew</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label small fw-bold mb-1" style="color: #6f42c1;">ESTADO</label>
+                <select class="form-select bg-light border-0 rounded-3 py-2">
+                    <option selected>Todos</option>
+                    <option value="1">Al día</option>
+                    <option value="2">Deudores</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 text-end">
+                <button type="reset" class="btn btn-light fw-bold w-100 py-2 rounded-3 hover-scale" style="color: #6f42c1;">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i>Limpiar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" style="min-width: 800px;">
+                <thead style="background-color: #6f42c1; color: white;">
+                    <tr>
+                        <th class="ps-4 py-3 small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Cliente</th>
+                        <th class="py-3 small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Contacto</th>
+                        <th class="py-3 small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Tipo</th>
+                        <th class="py-3 small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Saldo Cta. Cte.</th>
+                        <th class="pe-4 py-3 text-end small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle text-white d-flex justify-content-center align-items-center me-3 fw-bold shadow-sm" style="width: 40px; height: 40px; background-color: #6f42c1;">
+                                        @item.NombreRazonSocial.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">@item.NombreRazonSocial</div>
+                                        <div class="small text-secondary"><i class="bi bi-card-heading me-1"></i>@item.Cuit</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3">
+                                <div class="d-flex flex-column">
+                                    <span class="fw-bold text-dark">@(item.Localidad ?? "-")</span>
+                                    <span class="small text-success"><i class="bi bi-whatsapp me-1"></i>@(item.Telefono ?? "-")</span>
+                                </div>
+                            </td>
+                            <td class="py-3">
+                                @if (item.TipoCliente == "Mayorista")
+                                {
+                                    <span class="badge rounded-pill px-3" style="color: #6f42c1; background-color: #e2d9f3; border: 1px solid #d6bcfa;">Mayorista</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill px-3" style="color: #6f42c1; background-color: #e2d9f3; border: 1px solid #d6bcfa;">Revendedor</span>
+                                }
+                            </td>
+                            <td class="py-3">
+                                @if (item.SaldoCuentaCorriente < 0)
+                                {
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3">
+                                        $ @item.SaldoCuentaCorriente.ToString("N2") <i class="bi bi-exclamation-circle-fill ms-1"></i>
+                                    </span>
+                                }
+                                else if (item.SaldoCuentaCorriente > 0)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
+                                        $ +@item.SaldoCuentaCorriente.ToString("N2")
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-secondary fw-bold small">- $ 0,00 -</span>
+                                }
+                            </td>
+                            <td class="pe-4 py-3 text-end">
+                                <button class="btn btn-light btn-sm rounded-circle shadow-sm me-1" title="Ver Cuenta Corriente">
+                                    <i class="bi bi-wallet2 text-secondary"></i>
+                                </button>
+
+                                <button class="btn btn-light btn-sm rounded-circle shadow-sm"
+                                        title="Editar Cliente"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEditarCliente"
+                                        data-cliente-id="@item.Id"
+                                        data-cliente-nombre="@item.NombreRazonSocial"
+                                        data-cliente-cuit="@item.Cuit"
+                                        data-cliente-telefono="@item.Telefono"
+                                        data-cliente-localidad="@item.Localidad"
+                                        data-cliente-tipo="@item.TipoCliente">
+                                    <i class="bi bi-pencil-fill" style="color: #6f42c1;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalNuevoCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0 pb-0 ps-4 pt-4 rounded-top-4" style="background-color: #6f42c1; color: white;">
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Nuevo Cliente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="@Url.Action("GuardarCliente", "Clientes")" method="post">
+                <div class="modal-body p-4 bg-white">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">NOMBRE / RAZÓN SOCIAL</label>
+                        <input type="text" name="NombreRazonSocial" class="form-control bg-light border-0 rounded-3 py-2" required>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">CUIT</label>
+                            <input type="text" name="Cuit" class="form-control bg-light border-0 rounded-3 py-2" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">TELÉFONO</label>
+                            <input type="text" name="Telefono" class="form-control bg-light border-0 rounded-3 py-2">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">LOCALIDAD</label>
+                        <input type="text" name="Localidad" class="form-control bg-light border-0 rounded-3 py-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-secondary">TIPO DE CLIENTE</label>
+                        <div class="d-flex gap-2">
+                            <input type="radio" class="btn-check" name="TipoCliente" id="tn1" value="Mayorista" checked>
+                            <label class="btn rounded-pill flex-fill fw-bold small py-2" for="tn1" style="border: 2px solid #6f42c1; color: #6f42c1;">Mayorista</label>
+                            <input type="radio" class="btn-check" name="TipoCliente" id="tn2" value="Revendedor">
+                            <label class="btn rounded-pill flex-fill fw-bold small py-2" for="tn2" style="border: 2px solid #6f42c1; color: #6f42c1;">Revendedor</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pe-4 pb-4 bg-white rounded-bottom-4 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-light text-secondary rounded-pill px-4 fw-bold hover-danger shadow-sm border-0" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn rounded-pill px-4 fw-bold shadow hover-scale" style="background-color: #6f42c1; color: white;">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Cliente -->
+<div class="modal fade" id="modalEditarCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0 pb-0 ps-4 pt-4 rounded-top-4" style="background-color: #6f42c1; color: white;">
+                <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>Editar Cliente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="@Url.Action("EditarCliente", "Clientes")" method="post">
+                <input type="hidden" name="Id" id="editClienteId">
+                <div class="modal-body p-4 bg-white">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">NOMBRE / RAZÓN SOCIAL</label>
+                        <input type="text" name="NombreRazonSocial" id="editClienteNombre" class="form-control bg-light border-0 rounded-3 py-2" required>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">CUIT / DNI</label>
+                            <input type="text" name="Cuit" id="editClienteCuit" class="form-control bg-light border-0 rounded-3 py-2" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">TELÉFONO</label>
+                            <input type="text" name="Telefono" id="editClienteTelefono" class="form-control bg-light border-0 rounded-3 py-2">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">LOCALIDAD</label>
+                        <input type="text" name="Localidad" id="editClienteLocalidad" class="form-control bg-light border-0 rounded-3 py-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-secondary">TIPO DE CLIENTE</label>
+                        <div class="d-flex gap-2">
+                            <input type="radio" class="btn-check" name="TipoCliente" id="editTipo1" value="Mayorista">
+                            <label class="btn rounded-pill flex-fill fw-bold small py-2" for="editTipo1" style="border: 2px solid #6f42c1; color: #6f42c1;">Mayorista</label>
+                            <input type="radio" class="btn-check" name="TipoCliente" id="editTipo2" value="Revendedor">
+                            <label class="btn rounded-pill flex-fill fw-bold small py-2" for="editTipo2" style="border: 2px solid #6f42c1; color: #6f42c1;">Revendedor</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pe-4 pb-4 bg-white rounded-bottom-4 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-light text-secondary rounded-pill px-4 fw-bold hover-danger shadow-sm border-0" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn rounded-pill px-4 fw-bold shadow hover-scale" style="background-color: #6f42c1; color: white;">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Cargar datos al abrir el modal de edición
+    document.addEventListener('DOMContentLoaded', function() {
+        var modalEditarCliente = document.getElementById('modalEditarCliente');
+
+        modalEditarCliente.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+
+            // Extraer información de los atributos data-*
+            var clienteId = button.getAttribute('data-cliente-id');
+            var clienteNombre = button.getAttribute('data-cliente-nombre');
+            var clienteCuit = button.getAttribute('data-cliente-cuit');
+            var clienteTelefono = button.getAttribute('data-cliente-telefono');
+            var clienteLocalidad = button.getAttribute('data-cliente-localidad');
+            var clienteTipo = button.getAttribute('data-cliente-tipo');
+
+            // Actualizar los campos del formulario
+            document.getElementById('editClienteId').value = clienteId;
+            document.getElementById('editClienteNombre').value = clienteNombre;
+            document.getElementById('editClienteCuit').value = clienteCuit;
+            document.getElementById('editClienteTelefono').value = clienteTelefono || '';
+            document.getElementById('editClienteLocalidad').value = clienteLocalidad || '';
+
+            // Seleccionar el tipo de cliente correcto
+            if (clienteTipo === 'Mayorista') {
+                document.getElementById('editTipo1').checked = true;
+            } else {
+                document.getElementById('editTipo2').checked = true;
+            }
+        });
+    });
+</script>
+
+<style>
+    /* Estilos para botones radio cuando están seleccionados */
+    .btn-check:checked + label {
+        background-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
