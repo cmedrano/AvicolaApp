@@ -1,6 +1,81 @@
-﻿namespace AvicolaApp.Repository
+﻿using AvicolaApp.Data;
+using AvicolaApp.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace AvicolaApp.Repository
 {
-    public class UsuariosRepository
+    public class UsuariosRepository : IUsuariosRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public UsuariosRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<Usuario>> ObtenerTodosAsync()
+        {
+            return await _context.Usuarios
+                .Where(u => u.Activo)
+                .Include(u => u.Rol)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<Usuario?> ObtenerPorIdAsync(int id)
+        {
+            return await _context.Usuarios
+                .Where(u => u.Activo)
+                .Include(u => u.Rol)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task<Usuario?> ObtenerPorNombreOEmailAsync(string nombreOEmail)
+        {
+            var usuario = await _context.Usuarios
+                .Where(u => u.Activo)
+                .Include(u => u.Rol)
+                .FirstOrDefaultAsync(u => u.UserName == nombreOEmail || u.UserEmail == nombreOEmail);
+
+            if (usuario != null && usuario.Rol == null)
+            {
+                await _context.Entry(usuario).Reference(u => u.Rol).LoadAsync();
+            }
+
+            return usuario;
+        }
+
+        public async Task GuardarAsync(Usuario usuario)
+        {
+            usuario.CreateDate = DateTime.UtcNow;
+            usuario.Activo = true;
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ActualizarAsync(Usuario usuario)
+        {
+            _context.Usuarios.Update(usuario);
+            await _context.SaveChangesAsync();
+            await _context.Entry(usuario).ReloadAsync();
+            await _context.Entry(usuario).Reference(u => u.Rol).LoadAsync();
+        }
+
+        public async Task EliminarLogicamenteAsync(int id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario != null)
+            {
+                usuario.Activo = false;
+                _context.Usuarios.Update(usuario);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<int> ObtenerTotalAsync()
+        {
+            return await _context.Usuarios.Where(u => u.Activo).CountAsync();
+        }
     }
 }

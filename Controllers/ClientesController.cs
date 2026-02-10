@@ -32,27 +32,6 @@ namespace AvicolaApp.Controllers
             return View(resultado);
         }
 
-        //public async Task<IActionResult> Index(int page = 1, string? searchNombre = null, string? searchFantasia = null)
-        //{
-        //    if (page < 1)
-        //        page = 1;
-
-        //    var resultado = await _clienteService.ObtenerPaginadosAsync(page, PageSize, searchNombre, searchFantasia);
-
-        //    ViewData["CurrentPage"] = page;
-        //    ViewData["PageSize"] = PageSize;
-        //    ViewData["SearchNombre"] = searchNombre ?? "";
-        //    ViewData["SearchFantasia"] = searchFantasia ?? "";
-
-        //    // ✅ NUEVO: Detectar si es petición AJAX
-        //    if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-        //    {
-        //        return PartialView("_TablaClientesPartial", resultado);
-        //    }
-
-        //    return View(resultado);
-        //}
-
         [HttpPost(Name = "GuardarCliente")]
         public async Task<IActionResult> GuardarCliente(
             string Nombre,

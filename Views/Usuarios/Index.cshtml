@@ -44,7 +44,7 @@
                                     <td class="ps-4">@item.CreateDate.ToString("dd/MM/yyyy")</td>
                                     <td class="fw-bold text-dark">@item.UserName</td>
                                     <td>@item.UserEmail</td>
-                                    <td>@item.RolId</td>
+                                    <td>@item.Rol?.Nombre</td>
                                     <td class="text-end pe-4">
                                         <button type="button"
                                                 class="btn btn-sm btn-outline-primary"
@@ -53,7 +53,8 @@
                                                 data-user-id="@item.Id"
                                                 data-user-name="@item.UserName"
                                                 data-user-email="@item.UserEmail"
-                                                data-user-rol="@item.RolId">
+                                                data-user-rol="@item.Rol?.Nombre"
+                                                data-user-rol-id="@item.RolId">
                                             <i class="bi bi-pencil"></i>
                                         </button>
 
@@ -182,7 +183,8 @@
             var userId = button.getAttribute('data-user-id');
             var userName = button.getAttribute('data-user-name');
             var userEmail = button.getAttribute('data-user-email');
-            var userRolId = button.getAttribute('data-user-rol');
+            var userRolId = button.getAttribute('data-user-rol-id');
+            var userRolNombre = button.getAttribute('data-user-rol');
 
             document.getElementById('editUserId').value = userId;
             document.getElementById('editUserName').value = userName;
@@ -190,7 +192,7 @@
             document.getElementById('editUserNameHidden').value = userName;
             document.getElementById('editUserEmailHidden').value = userEmail;
             document.getElementById('editUserRolIdHidden').value = userRolId;
-            document.getElementById('editRolLabel').textContent = userRolId;
+            document.getElementById('editRolLabel').textContent = userRolNombre;
             
             // Limpiar el campo de contraseña al abrir el modal
             var passwordField = formEditarUsuario.querySelector('input[name="Password"]');

@@ -1,93 +1,31 @@
-﻿using AvicolaApp.Data;
-using AvicolaApp.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using AvicolaApp.Models;
+using AvicolaApp.Repository;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AvicolaApp.Services
 {
     public class UsuarioService : IUsuarioService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUsuariosRepository _usuariosRepository;
 
-        public UsuarioService(ApplicationDbContext context)
+        public UsuarioService(IUsuariosRepository usuariosRepository)
         {
-            _context = context;
+            _usuariosRepository = usuariosRepository;
         }
 
-        public async Task<List<Usuario>> ObtenerTodosAsync()
-        {
-            return await _context.Usuarios
-                .Where(u => u.Activo)
-                .Include(u => u.Rol)
-                .AsNoTracking()
-                .ToListAsync();
-        }
+        public Task<List<Usuario>> ObtenerTodosAsync() => _usuariosRepository.ObtenerTodosAsync();
 
-        public async Task<Usuario?> ObtenerPorIdAsync(int id)
-        {
-            return await _context.Usuarios
-                .Where(u => u.Activo)
-                .Include(u => u.Rol)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == id);
-        }
+        public Task<Usuario?> ObtenerPorIdAsync(int id) => _usuariosRepository.ObtenerPorIdAsync(id);
 
-        public async Task<Usuario?> ObtenerPorNombreOEmailAsync(string nombreOEmail)
-        {
-            var usuario = await _context.Usuarios
-                .Where(u => u.Activo)
-                .Include(u => u.Rol)
-                .FirstOrDefaultAsync(u => u.UserName == nombreOEmail || u.UserEmail == nombreOEmail);
-            
-            // Asegurar que el Rol está completamente cargado
-            if (usuario != null && usuario.Rol == null)
-            {
-                await _context.Entry(usuario).Reference(u => u.Rol).LoadAsync();
-            }
-            
-            return usuario;
-        }
+        public Task<Usuario?> ObtenerPorNombreOEmailAsync(string nombreOEmail) => _usuariosRepository.ObtenerPorNombreOEmailAsync(nombreOEmail);
 
-        public async Task GuardarAsync(Usuario usuario)
-        {
-            usuario.CreateDate = DateTime.UtcNow;
-            usuario.Activo = true;
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
-        }
+        public Task GuardarAsync(Usuario usuario) => _usuariosRepository.GuardarAsync(usuario);
 
-        public async Task ActualizarAsync(Usuario usuario)
-        {
-            try
-            {
-                _context.Usuarios.Update(usuario);
-                await _context.SaveChangesAsync();
-                
-                // Recargar la entidad para incluir las relaciones (Rol)
-                await _context.Entry(usuario).ReloadAsync();
-                await _context.Entry(usuario).Reference(u => u.Rol).LoadAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al actualizar usuario: {ex.Message}", ex);
-            }
-        }
+        public Task ActualizarAsync(Usuario usuario) => _usuariosRepository.ActualizarAsync(usuario);
 
-        public async Task EliminarLogicamenteAsync(int id)
-        {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario != null)
-            {
-                usuario.Activo = false;
-                _context.Usuarios.Update(usuario);
-                await _context.SaveChangesAsync();
-            }
-        }
+        public Task EliminarLogicamenteAsync(int id) => _usuariosRepository.EliminarLogicamenteAsync(id);
 
-        public async Task<int> ObtenerTotalAsync()
-        {
-            return await _context.Usuarios
-                .Where(u => u.Activo)
-                .CountAsync();
-        }
+        public Task<int> ObtenerTotalAsync() => _usuariosRepository.ObtenerTotalAsync();
     }
 }

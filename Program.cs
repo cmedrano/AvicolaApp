@@ -1,4 +1,5 @@
 using AvicolaApp.Data;
+using AvicolaApp.Repository;
 using AvicolaApp.Services;
 using AvicolaApp.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -13,6 +14,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString)
     .EnableSensitiveDataLogging(builder.Environment.IsDevelopment()));
+
+// Registrar Repositorios
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 
 // Registrar Servicios
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
