@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AvicolaApp.Controllers
 {
-    [Authorize(Roles = "Administrador, Operario")]
+    [Authorize]
     public class ClientesController : Controller
     {
         private readonly IClienteService _clienteService;
@@ -37,9 +37,13 @@ namespace AvicolaApp.Controllers
             string Nombre,
             string? Telefono,
             string? Domicilio,
+            string? Localidad,
+            string? Provincia,
+            string? CodigoPostal,
             string? Email,
             string? Celular,
-            string? Fax,
+            string? DNI,
+            string? CUIT,
             string? Fantasia,
             string? Categoria,
             bool OperacionesContado,
@@ -68,9 +72,13 @@ namespace AvicolaApp.Controllers
                 Nombre = Nombre,
                 Telefono = Telefono,
                 Domicilio = Domicilio,
+                Localidad = Localidad,
+                Provincia = Provincia,
+                CodigoPostal = CodigoPostal,
                 Email = Email,
                 Celular = Celular,
-                Fax = Fax,
+                DNI = DNI,
+                CUIT = CUIT,
                 Fantasia = Fantasia,
                 Categoria = Categoria,
                 OperacionesContado = OperacionesContado,
@@ -89,9 +97,13 @@ namespace AvicolaApp.Controllers
             string Nombre,
             string? Telefono,
             string? Domicilio,
+            string? Localidad,
+            string? Provincia,
+            string? CodigoPostal,
             string? Email,
             string? Celular,
-            string? Fax,
+            string? DNI,
+            string? CUIT,
             string? Fantasia,
             string? Categoria,
             bool OperacionesContado,
@@ -119,9 +131,13 @@ namespace AvicolaApp.Controllers
             clienteExistente.Nombre = Nombre;
             clienteExistente.Telefono = Telefono;
             clienteExistente.Domicilio = Domicilio;
+            clienteExistente.Localidad = Localidad;
+            clienteExistente.Provincia = Provincia;
+            clienteExistente.CodigoPostal = CodigoPostal;
             clienteExistente.Email = Email;
             clienteExistente.Celular = Celular;
-            clienteExistente.Fax = Fax;
+            clienteExistente.DNI = DNI;
+            clienteExistente.CUIT = CUIT;
             clienteExistente.Fantasia = Fantasia;
             clienteExistente.Categoria = Categoria;
             clienteExistente.OperacionesContado = OperacionesContado;

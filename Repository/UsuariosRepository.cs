@@ -56,10 +56,22 @@ namespace AvicolaApp.Repository
 
         public async Task ActualizarAsync(Usuario usuario)
         {
-            _context.Usuarios.Update(usuario);
-            await _context.SaveChangesAsync();
-            await _context.Entry(usuario).ReloadAsync();
-            await _context.Entry(usuario).Reference(u => u.Rol).LoadAsync();
+            var usuarioEnBd = await _context.Usuarios.FindAsync(usuario.Id);
+            if (usuarioEnBd != null)
+            {
+                usuarioEnBd.UserName = usuario.UserName;
+                usuarioEnBd.UserEmail = usuario.UserEmail;
+                usuarioEnBd.Password = usuario.Password;
+                usuarioEnBd.RolId = usuario.RolId;
+                usuarioEnBd.Activo = usuario.Activo;
+
+                _context.Usuarios.Update(usuarioEnBd);
+                await _context.SaveChangesAsync();
+                
+                await _context.Entry(usuarioEnBd).Reference(u => u.Rol).LoadAsync();
+                
+                usuario.Rol = usuarioEnBd.Rol;
+            }
         }
 
         public async Task EliminarLogicamenteAsync(int id)

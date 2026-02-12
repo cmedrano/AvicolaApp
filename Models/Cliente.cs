@@ -25,6 +25,18 @@ namespace AvicolaApp.Models
         [Display(Name = "Domicilio")]
         public string? Domicilio { get; set; }
 
+        [StringLength(100)]
+        [Display(Name = "Localidad")]
+        public string? Localidad { get; set; }
+
+        [StringLength(100)]
+        [Display(Name = "Provincia")]
+        public string? Provincia { get; set; }
+
+        [StringLength(20)]
+        [Display(Name = "Código Postal")]
+        public string? CodigoPostal { get; set; }
+
         [StringLength(200)]
         [Display(Name = "Email")]
         public string? Email { get; set; }
@@ -33,9 +45,13 @@ namespace AvicolaApp.Models
         [Display(Name = "Celular")]
         public string? Celular { get; set; }
 
-        [StringLength(50)]
-        [Display(Name = "Fax")]
-        public string? Fax { get; set; }
+        [StringLength(20)]
+        [Display(Name = "DNI")]
+        public string? DNI { get; set; }
+
+        [StringLength(20)]
+        [Display(Name = "CUIT")]
+        public string? CUIT { get; set; }
 
         [Display(Name = "Activo")]
         public bool Activo { get; set; } = true;

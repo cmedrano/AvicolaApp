@@ -109,7 +109,7 @@ namespace AvicolaApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditarUsuario(int Id, string UserName, string UserEmail, int RolId, string Password)
         {
-            _logger.LogInformation($"=== INICIO EditarUsuario === Id: {Id}, UserName: {UserName}, Password recibida: {(string.IsNullOrWhiteSpace(Password) ? "VACIA/NULA" : $"PRESENTE ({Password.Length} caracteres)")}");
+            _logger.LogInformation($"=== INICIO EditarUsuario === Id: {Id}, UserName: {UserName}, UserEmail: {UserEmail}, RolId: {RolId}, Password recibida: {(string.IsNullOrWhiteSpace(Password) ? "VACIA/NULA" : $"PRESENTE ({Password.Length} caracteres)")}");
 
             if (Id <= 0)
             {
@@ -129,6 +129,48 @@ namespace AvicolaApp.Controllers
 
             try
             {
+                bool emailCambiado = usuarioExistente.UserEmail != UserEmail;
+                bool rolCambiado = usuarioExistente.RolId != RolId;
+                
+                // Validar que el email sea válido si se proporcionó
+                if (string.IsNullOrWhiteSpace(UserEmail))
+                {
+                    TempData["Error"] = "El correo electrónico no puede estar vacío";
+                    return RedirectToAction("Index");
+                }
+
+                // Validar que el rol sea válido
+                if (RolId <= 0)
+                {
+                    TempData["Error"] = "Debes seleccionar un rol válido";
+                    return RedirectToAction("Index");
+                }
+
+                // Si el email cambió, verificar que no exista otro usuario con ese email
+                if (emailCambiado)
+                {
+                    var usuarioConMismoEmail = await _autenticacionService.ObtenerUsuarioPorNombreOEmailAsync(UserEmail);
+                    if (usuarioConMismoEmail != null && usuarioConMismoEmail.Id != Id)
+                    {
+                        TempData["Error"] = "Ya existe otro usuario con este correo electrónico";
+                        return RedirectToAction("Index");
+                    }
+                }
+
+                // Actualizar email si cambió
+                if (emailCambiado)
+                {
+                    usuarioExistente.UserEmail = UserEmail;
+                    _logger.LogInformation($">>> Email actualizado de {usuarioExistente.UserEmail} a {UserEmail}");
+                }
+
+                // Actualizar rol si cambió
+                if (rolCambiado)
+                {
+                    usuarioExistente.RolId = RolId;
+                    _logger.LogInformation($">>> Rol actualizado a {RolId}");
+                }
+
                 // Solo actualizar la contraseña si se proporcionó una nueva
                 if (!string.IsNullOrWhiteSpace(Password))
                 {
@@ -146,30 +188,36 @@ namespace AvicolaApp.Controllers
                     var hashAnterior = usuarioExistente.Password;
                     usuarioExistente.Password = nuevoHash;
                     _logger.LogInformation($">>> Contraseña asignada a la entidad. Hash anterior: {hashAnterior?.Substring(0, 20)}...");
-                    
-                    await _usuarioService.ActualizarAsync(usuarioExistente);
-                    _logger.LogInformation($">>> Contraseña guardada en BD. Nuevo valor: {usuarioExistente.Password?.Substring(0, 20)}...");
-                    
-                    // Verificar que se guardó correctamente
+                }
+
+                // Guardar los cambios
+                await _usuarioService.ActualizarAsync(usuarioExistente);
+                _logger.LogInformation($">>> Cambios guardados en BD");
+
+                // Si se cambió la contraseña, verificar que se guardó correctamente
+                if (!string.IsNullOrWhiteSpace(Password))
+                {
                     var usuarioVerificado = await _usuarioService.ObtenerPorIdAsync(Id);
                     var esValida = _autenticacionService.VerificarPassword(Password, usuarioVerificado.Password);
                     _logger.LogInformation($">>> Verificación post-guardado: Hash en BD = {usuarioVerificado.Password?.Substring(0, 20)}..., ¿Válida? {esValida}");
-                    
-                    TempData["Exito"] = "Contraseña actualizada exitosamente";
-                    _logger.LogInformation($"=== ÉXITO === Contraseña del usuario {usuarioExistente.UserName} actualizada por {User.Identity?.Name}");
+                    TempData["Exito"] = "Usuario actualizado exitosamente";
+                }
+                else if (emailCambiado || rolCambiado)
+                {
+                    TempData["Exito"] = "Usuario actualizado exitosamente";
                 }
                 else
                 {
-                    _logger.LogWarning($"EditarUsuario: Intento de actualizar usuario {Id} sin proporcionar contraseña");
-                    TempData["Aviso"] = "No se ha realizado ningún cambio. Ingresá una nueva contraseña para actualizar.";
+                    TempData["Aviso"] = "No se realizaron cambios";
                 }
 
+                _logger.LogInformation($"=== ÉXITO === Usuario {usuarioExistente.UserName} actualizado por {User.Identity?.Name}");
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "!!! ERROR al actualizar contraseña del usuario ID: {UserId} | Exception: {ExceptionMessage}", Id, ex.Message);
-                TempData["Error"] = $"Error al actualizar la contraseña: {ex.Message}";
+                _logger.LogError(ex, "!!! ERROR al actualizar usuario ID: {UserId} | Exception: {ExceptionMessage}", Id, ex.Message);
+                TempData["Error"] = $"Error al actualizar el usuario: {ex.Message}";
                 return RedirectToAction("Index");
             }
         }

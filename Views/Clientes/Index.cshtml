@@ -93,9 +93,13 @@
                                             data-cliente-nombre="@item.Nombre"
                                             data-cliente-telefono="@item.Telefono"
                                             data-cliente-domicilio="@item.Domicilio"
+                                            data-cliente-localidad="@item.Localidad"
+                                            data-cliente-provincia="@item.Provincia"
+                                            data-cliente-codigo-postal="@item.CodigoPostal"
                                             data-cliente-email="@item.Email"
                                             data-cliente-celular="@item.Celular"
-                                            data-cliente-fax="@item.Fax"
+                                            data-cliente-dni="@item.DNI"
+                                            data-cliente-cuit="@item.CUIT"
                                             data-cliente-fantasia="@item.Fantasia"
                                             data-cliente-categoria="@item.Categoria"
                                             data-cliente-operaciones-contado="@item.OperacionesContado"
@@ -111,9 +115,13 @@
                                             data-cliente-nombre="@item.Nombre"
                                             data-cliente-telefono="@item.Telefono"
                                             data-cliente-domicilio="@item.Domicilio"
+                                            data-cliente-localidad="@item.Localidad"
+                                            data-cliente-provincia="@item.Provincia"
+                                            data-cliente-codigo-postal="@item.CodigoPostal"
                                             data-cliente-email="@item.Email"
                                             data-cliente-celular="@item.Celular"
-                                            data-cliente-fax="@item.Fax"
+                                            data-cliente-dni="@item.DNI"
+                                            data-cliente-cuit="@item.CUIT"
                                             data-cliente-fantasia="@item.Fantasia"
                                             data-cliente-categoria="@item.Categoria"
                                             data-cliente-operaciones-contado="@item.OperacionesContado"
@@ -243,9 +251,31 @@
                     <label class="form-label small fw-bold text-secondary">DOMICILIO</label>
                     <input type="text" id="verClienteDomicilio" class="form-control bg-light border-0 rounded-3 py-2 readonly-input" readonly>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-secondary">FAX</label>
-                    <input type="text" id="verClienteFax" class="form-control bg-light border-0 rounded-3 py-2 readonly-input" readonly>
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-secondary">LOCALIDAD</label>
+                        <input type="text" id="verClienteLocalidad" class="form-control bg-light border-0 rounded-3 py-2 readonly-input" readonly>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-secondary">PROVINCIA</label>
+                        <input type="text" id="verClienteProvincia" class="form-control bg-light border-0 rounded-3 py-2 readonly-input" readonly>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-secondary">CÓDIGO POSTAL</label>
+                        <input type="text" id="verClienteCodigoPostal" class="form-control bg-light border-0 rounded-3 py-2 readonly-input" readonly>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-secondary">DNI</label>
+                        <input type="text" id="verClienteDNI" class="form-control bg-light border-0 rounded-3 py-2 readonly-input" readonly>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-secondary">CUIT</label>
+                        <input type="text" id="verClienteCUIT" class="form-control bg-light border-0 rounded-3 py-2 readonly-input" readonly>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <div class="form-check">
@@ -320,8 +350,24 @@
                         <input type="text" name="Domicilio" id="editClienteDomicilio" class="form-control bg-light border-0 rounded-3 py-2">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">FAX</label>
-                        <input type="text" name="Fax" id="editClienteFax" class="form-control bg-light border-0 rounded-3 py-2">
+                        <label class="form-label small fw-bold text-secondary">LOCALIDAD</label>
+                        <input type="text" name="Localidad" id="editClienteLocalidad" class="form-control bg-light border-0 rounded-3 py-2">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">PROVINCIA</label>
+                        <input type="text" name="Provincia" id="editClienteProvincia" class="form-control bg-light border-0 rounded-3 py-2">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">CÓDIGO POSTAL</label>
+                        <input type="text" name="CodigoPostal" id="editClienteCodigoPostal" class="form-control bg-light border-0 rounded-3 py-2">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">DNI</label>
+                        <input type="text" name="DNI" id="editClienteDNI" class="form-control bg-light border-0 rounded-3 py-2">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">CUIT</label>
+                        <input type="text" name="CUIT" id="editClienteCUIT" class="form-control bg-light border-0 rounded-3 py-2">
                     </div>
                     <div class="mb-3">
                         <div class="form-check">

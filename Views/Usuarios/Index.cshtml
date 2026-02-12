@@ -99,8 +99,6 @@
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="Id" id="editUserId">
                 <input type="hidden" name="UserName" id="editUserNameHidden">
-                <input type="hidden" name="UserEmail" id="editUserEmailHidden">
-                <input type="hidden" name="RolId" id="editUserRolIdHidden">
 
                 <div class="modal-body p-4 bg-white">
                     <div class="mb-3">
@@ -110,14 +108,21 @@
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Correo Electrónico</label>
-                        <input type="email" id="editUserEmail" class="form-control bg-light border-0" disabled>
+                        <input type="email" name="UserEmail" id="editUserEmail" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary text-uppercase">Rol</label>
-                        <div class="p-3 bg-light rounded-2 fw-semibold text-dark" id="editRolLabel">
-                            -
-                        </div>
+                        <select name="RolId" id="editUserRolId" class="form-select" required>
+                            <option value="">Seleccionar Rol</option>
+                            @if (ViewBag.Roles != null)
+                            {
+                                @foreach (var rol in ViewBag.Roles)
+                                {
+                                    <option value="@rol.Id">@rol.Nombre</option>
+                                }
+                            }
+                        </select>
                     </div>
 
                     <div class="mb-3">
@@ -128,7 +133,7 @@
                     <div class="alert alert-info d-flex align-items-center border-0 rounded-3 bg-info-subtle text-info-emphasis" role="alert">
                         <i class="bi bi-info-circle-fill flex-shrink-0 me-2"></i>
                         <div class="small fw-semibold">
-                            Solo puedes editar la contraseña. Los otros datos son de solo lectura.
+                            Edita el correo electrónico y rol según sea necesario. La contraseña es opcional.
                         </div>
                     </div>
                 </div>
@@ -190,9 +195,7 @@
             document.getElementById('editUserName').value = userName;
             document.getElementById('editUserEmail').value = userEmail;
             document.getElementById('editUserNameHidden').value = userName;
-            document.getElementById('editUserEmailHidden').value = userEmail;
-            document.getElementById('editUserRolIdHidden').value = userRolId;
-            document.getElementById('editRolLabel').textContent = userRolNombre;
+            document.getElementById('editUserRolId').value = userRolId;
             
             // Limpiar el campo de contraseña al abrir el modal
             var passwordField = formEditarUsuario.querySelector('input[name="Password"]');

@@ -97,9 +97,13 @@ namespace AvicolaApp.Repository
                 clienteExistente.Nombre = cliente.Nombre;
                 clienteExistente.Telefono = cliente.Telefono;
                 clienteExistente.Domicilio = cliente.Domicilio;
+                clienteExistente.Localidad = cliente.Localidad;
+                clienteExistente.Provincia = cliente.Provincia;
+                clienteExistente.CodigoPostal = cliente.CodigoPostal;
                 clienteExistente.Email = cliente.Email;
                 clienteExistente.Celular = cliente.Celular;
-                clienteExistente.Fax = cliente.Fax;
+                clienteExistente.DNI = cliente.DNI;
+                clienteExistente.CUIT = cliente.CUIT;
                 clienteExistente.Fantasia = cliente.Fantasia;
                 clienteExistente.Categoria = cliente.Categoria;
                 clienteExistente.OperacionesContado = cliente.OperacionesContado;

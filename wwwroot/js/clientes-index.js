@@ -91,114 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-// clientes-index.js
-//var validacionEmailEditarUrl = '/Clientes/ValidarEmail';
-
-//document.addEventListener('DOMContentLoaded', function () {
-//    var inputNombre = document.getElementById('inputNombre');
-//    var inputNombreFantasia = document.getElementById('inputNombreFantasia');
-//    var debounceTimer = null;
-
-//    function buscarDinamicamente() {
-//        var nombre = inputNombre.value.trim();
-//        var fantasia = inputNombreFantasia.value.trim();
-
-//        if (debounceTimer) {
-//            clearTimeout(debounceTimer);
-//        }
-
-//        var debeHacerBusqueda = (nombre.length >= 1 || fantasia.length >= 1);
-
-//        if (!debeHacerBusqueda) {
-//            return;
-//        }
-
-//        debounceTimer = setTimeout(function () {
-//            var url = '/Clientes/Index?page=1&searchNombre=' + encodeURIComponent(nombre) + '&searchFantasia=' + encodeURIComponent(fantasia);
-
-//            fetch(url, {
-//                headers: {
-//                    'X-Requested-With': 'XMLHttpRequest' // ✅ CLAVE: Marca como AJAX
-//                }
-//            })
-//                .then(function (response) { return response.text(); })
-//                .then(function (html) {
-//                    // ✅ NUEVO: Ya no necesitamos parsear, viene solo lo que necesitamos
-//                    var tempDiv = document.createElement('div');
-//                    tempDiv.innerHTML = html;
-
-//                    var newTable = tempDiv.querySelector('#tablaClientesBody');
-//                    var newPaginationInfo = tempDiv.querySelector('.paginacion-info');
-
-//                    var currentTable = document.querySelector('#tablaClientesBody');
-//                    var currentPaginationContainer = document.querySelector('.d-flex.justify-content-between.align-items-center.mt-4');
-
-//                    if (newTable && currentTable) {
-//                        currentTable.innerHTML = newTable.innerHTML;
-//                        reattachEditButtons();
-//                    }
-
-//                    if (newPaginationInfo && currentPaginationContainer) {
-//                        currentPaginationContainer.innerHTML = newPaginationInfo.innerHTML;
-//                        agregarEventListenersPaginacion();
-//                    } else if (!newPaginationInfo && currentPaginationContainer) {
-//                        currentPaginationContainer.style.display = 'none';
-//                    }
-//                })
-//                .catch(function (error) { console.error('Error:', error); });
-//        }, 300);
-//    }
-
-//    function reattachEditButtons() {
-//        var editButtons = document.querySelectorAll('[data-bs-target="#modalEditarCliente"]');
-//        editButtons.forEach(function (button) {
-//            button.addEventListener('click', function (e) { });
-//        });
-
-//        var verButtons = document.querySelectorAll('[data-bs-target="#modalVerCliente"]');
-//        verButtons.forEach(function (button) {
-//            button.addEventListener('click', function (e) { });
-//        });
-//    }
-
-//    function agregarEventListenersPaginacion() {
-//        var paginationLinks = document.querySelectorAll('.pagination a');
-//        paginationLinks.forEach(function (link) {
-//            link.addEventListener('click', function (e) {
-//                e.preventDefault();
-//                var url = this.href;
-
-//                fetch(url, {
-//                    headers: {
-//                        'X-Requested-With': 'XMLHttpRequest' // ✅ CLAVE
-//                    }
-//                })
-//                    .then(function (response) { return response.text(); })
-//                    .then(function (html) {
-//                        var tempDiv = document.createElement('div');
-//                        tempDiv.innerHTML = html;
-
-//                        var newTable = tempDiv.querySelector('#tablaClientesBody');
-//                        var newPaginationInfo = tempDiv.querySelector('.paginacion-info');
-
-//                        var currentTable = document.querySelector('#tablaClientesBody');
-//                        var currentPaginationContainer = document.querySelector('.d-flex.justify-content-between.align-items-center.mt-4');
-
-//                        if (newTable && currentTable) {
-//                            currentTable.outerHTML = newTable.outerHTML;
-//                            reattachEditButtons();
-//                        }
-
-//                        if (newPaginationInfo && currentPaginationContainer) {
-//                            currentPaginationContainer.innerHTML = newPaginationInfo.innerHTML;
-//                            agregarEventListenersPaginacion();
-//                        }
-//                    })
-//                    .catch(function (error) { console.error('Error:', error); });
-//            });
-//        });
-//    }
-
     inputNombre.addEventListener('keyup', function() {
         buscarDinamicamente();
     });
@@ -223,8 +115,12 @@ document.addEventListener('DOMContentLoaded', function() {
         var clienteTelefono = button.getAttribute('data-cliente-telefono');
         var clienteEmail = button.getAttribute('data-cliente-email');
         var clienteCelular = button.getAttribute('data-cliente-celular');
-        var clienteFax = button.getAttribute('data-cliente-fax');
         var clienteDomicilio = button.getAttribute('data-cliente-domicilio');
+        var clienteLocalidad = button.getAttribute('data-cliente-localidad');
+        var clienteProvincia = button.getAttribute('data-cliente-provincia');
+        var clienteCodigoPostal = button.getAttribute('data-cliente-codigo-postal');
+        var clienteDNI = button.getAttribute('data-cliente-dni');
+        var clienteCUIT = button.getAttribute('data-cliente-cuit');
         var clienteFantasia = button.getAttribute('data-cliente-fantasia');
         var clienteCategoria = button.getAttribute('data-cliente-categoria');
         var clienteOperacionesContado = button.getAttribute('data-cliente-operaciones-contado');
@@ -235,8 +131,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('editClienteTelefono').value = clienteTelefono || '';
         editClienteEmail.value = clienteEmail || '';
         document.getElementById('editClienteCelular').value = clienteCelular || '';
-        document.getElementById('editClienteFax').value = clienteFax || '';
         document.getElementById('editClienteDomicilio').value = clienteDomicilio || '';
+        document.getElementById('editClienteLocalidad').value = clienteLocalidad || '';
+        document.getElementById('editClienteProvincia').value = clienteProvincia || '';
+        document.getElementById('editClienteCodigoPostal').value = clienteCodigoPostal || '';
+        document.getElementById('editClienteDNI').value = clienteDNI || '';
+        document.getElementById('editClienteCUIT').value = clienteCUIT || '';
         document.getElementById('editClienteFantasia').value = clienteFantasia || '';
         document.getElementById('editClienteCategoria').value = clienteCategoria || '';
         document.getElementById('editOperacionesContado').checked = clienteOperacionesContado === 'True';
@@ -335,8 +235,12 @@ document.addEventListener('DOMContentLoaded', function() {
             var clienteTelefono = button.getAttribute('data-cliente-telefono');
             var clienteEmail = button.getAttribute('data-cliente-email');
             var clienteCelular = button.getAttribute('data-cliente-celular');
-            var clienteFax = button.getAttribute('data-cliente-fax');
             var clienteDomicilio = button.getAttribute('data-cliente-domicilio');
+            var clienteLocalidad = button.getAttribute('data-cliente-localidad');
+            var clienteProvincia = button.getAttribute('data-cliente-provincia');
+            var clienteCodigoPostal = button.getAttribute('data-cliente-codigo-postal');
+            var clienteDNI = button.getAttribute('data-cliente-dni');
+            var clienteCUIT = button.getAttribute('data-cliente-cuit');
             var clienteFantasia = button.getAttribute('data-cliente-fantasia');
             var clienteCategoria = button.getAttribute('data-cliente-categoria');
             var clienteOperacionesContado = button.getAttribute('data-cliente-operaciones-contado');
@@ -347,14 +251,16 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('verClienteTelefono').value = clienteTelefono || '';
             document.getElementById('verClienteEmail').value = clienteEmail || '';
             document.getElementById('verClienteCelular').value = clienteCelular || '';
-            document.getElementById('verClienteFax').value = clienteFax || '';
             document.getElementById('verClienteDomicilio').value = clienteDomicilio || '';
+            document.getElementById('verClienteLocalidad').value = clienteLocalidad || '';
+            document.getElementById('verClienteProvincia').value = clienteProvincia || '';
+            document.getElementById('verClienteCodigoPostal').value = clienteCodigoPostal || '';
+            document.getElementById('verClienteDNI').value = clienteDNI || '';
+            document.getElementById('verClienteCUIT').value = clienteCUIT || '';
             document.getElementById('verClienteFantasia').value = clienteFantasia || '';
             document.getElementById('verClienteCategoria').value = clienteCategoria || '';
             document.getElementById('verOperacionesContado').checked = clienteOperacionesContado === 'True';
             document.getElementById('verInhabilitado').checked = clienteInhabilitado === 'True';
         });
     }
-
-    agregarEventListenersPaginacion();
 });
