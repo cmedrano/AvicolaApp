@@ -10,6 +10,7 @@
         public string? Fax { get; set; }
         public string? Fantasia { get; set; }
         public string? Categoria { get; set; }
+        public string? CondicionDeVenta { get; set; }
         public bool OperacionesContado { get; set; } = false;
         public bool InhabilitadoFacturar { get; set; } = false;
     }

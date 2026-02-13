@@ -25,5 +25,8 @@ namespace AvicolaApp.Models
 
         // Borrado lógico: 1 = activo, 0 = inactivo (borrado)
         public bool Activo { get; set; } = true;
+
+        // Seguridad: obliga a cambiar contraseña en el primer login
+        public bool DebeCambiarPassword { get; set; } = true;
     }
 }

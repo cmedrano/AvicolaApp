@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (newTable && currentTable) {
                         currentTable.innerHTML = newTable.innerHTML;
                         reattachEditButtons();
+                        reattachViewButtons();
                     }
 
                     if (newPaginationContainer && currentPaginationContainer) {
@@ -53,7 +54,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function reattachEditButtons() {
         var editButtons = document.querySelectorAll('[data-bs-target="#modalEditarCliente"]');
         editButtons.forEach(function(button) {
-            button.addEventListener('click', function(e) {});
+            button.removeEventListener('click', function(e) {});
+        });
+    }
+
+    function reattachViewButtons() {
+        var viewButtons = document.querySelectorAll('[data-bs-target="#modalVerCliente"]');
+        viewButtons.forEach(function(button) {
+            button.removeEventListener('click', function(e) {});
         });
     }
 
@@ -79,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (newTable && currentTable) {
                             currentTable.innerHTML = newTable.innerHTML;
                             reattachEditButtons();
+                            reattachViewButtons();
                         }
 
                         if (newPaginationContainer && currentPaginationContainer) {
@@ -122,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var clienteDNI = button.getAttribute('data-cliente-dni');
         var clienteCUIT = button.getAttribute('data-cliente-cuit');
         var clienteFantasia = button.getAttribute('data-cliente-fantasia');
+        var clienteCondicionDeVenta = button.getAttribute('data-cliente-condiciondeventa');
         var clienteCategoria = button.getAttribute('data-cliente-categoria');
         var clienteOperacionesContado = button.getAttribute('data-cliente-operaciones-contado');
         var clienteInhabilitado = button.getAttribute('data-cliente-inhabilitado');
@@ -138,6 +148,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('editClienteDNI').value = clienteDNI || '';
         document.getElementById('editClienteCUIT').value = clienteCUIT || '';
         document.getElementById('editClienteFantasia').value = clienteFantasia || '';
+        
+        // Fijar el valor de CondicionDeVenta en el select
+        var editCondicionSelect = document.getElementById('editClienteCondicionDeVenta');
+        editCondicionSelect.value = clienteCondicionDeVenta || '';
+        
         document.getElementById('editClienteCategoria').value = clienteCategoria || '';
         document.getElementById('editOperacionesContado').checked = clienteOperacionesContado === 'True';
         document.getElementById('editInhabilitado').checked = clienteInhabilitado === 'True';
@@ -242,6 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var clienteDNI = button.getAttribute('data-cliente-dni');
             var clienteCUIT = button.getAttribute('data-cliente-cuit');
             var clienteFantasia = button.getAttribute('data-cliente-fantasia');
+            var clienteCondicionDeVenta = button.getAttribute('data-cliente-condiciondeventa');
             var clienteCategoria = button.getAttribute('data-cliente-categoria');
             var clienteOperacionesContado = button.getAttribute('data-cliente-operaciones-contado');
             var clienteInhabilitado = button.getAttribute('data-cliente-inhabilitado');
@@ -258,6 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('verClienteDNI').value = clienteDNI || '';
             document.getElementById('verClienteCUIT').value = clienteCUIT || '';
             document.getElementById('verClienteFantasia').value = clienteFantasia || '';
+            document.getElementById('verClienteCondicionDeVenta').value = clienteCondicionDeVenta || '';
             document.getElementById('verClienteCategoria').value = clienteCategoria || '';
             document.getElementById('verOperacionesContado').checked = clienteOperacionesContado === 'True';
             document.getElementById('verInhabilitado').checked = clienteInhabilitado === 'True';

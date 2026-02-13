@@ -1,4 +1,5 @@
 using AvicolaApp.Data;
+using AvicolaApp.Helpers;
 using AvicolaApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using System.Diagnostics;
 namespace AvicolaApp.Controllers
 {
     [Authorize]
+    [RequirePasswordChange]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

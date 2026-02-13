@@ -1,12 +1,14 @@
 ﻿using AvicolaApp.Models;
 using AvicolaApp.Services;
 using AvicolaApp.Services.Interfaces;
+using AvicolaApp.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AvicolaApp.Controllers
 {
     [Authorize(Roles = "Administrador")]
+    [RequirePasswordChange]
     public class UsuariosController : Controller
     {
         private readonly IUsuarioService _usuarioService;

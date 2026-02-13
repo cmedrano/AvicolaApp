@@ -61,6 +61,10 @@ namespace AvicolaApp.Models
         public string? Fantasia { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "CondicionDeVenta")]
+        public string? CondicionDeVenta { get; set; }
+
+        [StringLength(100)]
         [Display(Name = "Categoría")]
         public string? Categoria { get; set; }
 

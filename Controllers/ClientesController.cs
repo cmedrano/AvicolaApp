@@ -1,12 +1,14 @@
 ﻿using AvicolaApp.Models;
 using AvicolaApp.Models.DTOs;
 using AvicolaApp.Services.Interfaces;
+using AvicolaApp.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AvicolaApp.Controllers
 {
     [Authorize]
+    [RequirePasswordChange]
     public class ClientesController : Controller
     {
         private readonly IClienteService _clienteService;
@@ -46,6 +48,7 @@ namespace AvicolaApp.Controllers
             string? CUIT,
             string? Fantasia,
             string? Categoria,
+            string? CondicionDeVenta,
             bool OperacionesContado,
             bool InhabilitadoFacturar)
         {
@@ -81,6 +84,7 @@ namespace AvicolaApp.Controllers
                 CUIT = CUIT,
                 Fantasia = Fantasia,
                 Categoria = Categoria,
+                CondicionDeVenta = CondicionDeVenta,
                 OperacionesContado = OperacionesContado,
                 InhabilitadoFacturar = InhabilitadoFacturar
             };
@@ -106,6 +110,7 @@ namespace AvicolaApp.Controllers
             string? CUIT,
             string? Fantasia,
             string? Categoria,
+            string? CondicionDeVenta,
             bool OperacionesContado,
             bool InhabilitadoFacturar)
         {
@@ -139,6 +144,7 @@ namespace AvicolaApp.Controllers
             clienteExistente.DNI = DNI;
             clienteExistente.CUIT = CUIT;
             clienteExistente.Fantasia = Fantasia;
+            clienteExistente.CondicionDeVenta = CondicionDeVenta;
             clienteExistente.Categoria = Categoria;
             clienteExistente.OperacionesContado = OperacionesContado;
             clienteExistente.InhabilitadoFacturar = InhabilitadoFacturar;

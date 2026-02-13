@@ -105,6 +105,7 @@ namespace AvicolaApp.Repository
                 clienteExistente.DNI = cliente.DNI;
                 clienteExistente.CUIT = cliente.CUIT;
                 clienteExistente.Fantasia = cliente.Fantasia;
+                clienteExistente.CondicionDeVenta = cliente.CondicionDeVenta;
                 clienteExistente.Categoria = cliente.Categoria;
                 clienteExistente.OperacionesContado = cliente.OperacionesContado;
                 clienteExistente.InhabilitadoFacturar = cliente.InhabilitadoFacturar;

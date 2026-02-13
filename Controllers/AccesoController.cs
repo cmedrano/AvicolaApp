@@ -60,6 +60,13 @@ namespace AvicolaApp.Controllers
                 await SignInUsuario(usuarioBD);
                 _logger.LogInformation($"Usuario {usuarioBD.UserName} ha iniciado sesión");
 
+                // Si el usuario debe cambiar contraseña, redirigir a la página de cambio obligatorio
+                if (usuarioBD.DebeCambiarPassword)
+                {
+                    _logger.LogInformation($"Usuario {usuarioBD.UserName} debe cambiar contraseña en el login");
+                    return RedirectToAction("CambiarPasswordObligatorio", "Acceso");
+                }
+
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
@@ -78,6 +85,94 @@ namespace AvicolaApp.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             _logger.LogInformation($"Usuario {username} ha cerrado sesión");
             return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public IActionResult CambiarPasswordObligatorio()
+        {
+            // Verificar que el usuario está autenticado
+            if (!User.Identity?.IsAuthenticated ?? true)
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarPasswordObligatorio(string passwordActual, string passwordNueva, string passwordConfirmar)
+        {
+            // Verificar que el usuario está autenticado
+            if (!User.Identity?.IsAuthenticated ?? true)
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Validaciones
+            if (string.IsNullOrWhiteSpace(passwordActual) || string.IsNullOrWhiteSpace(passwordNueva) || string.IsNullOrWhiteSpace(passwordConfirmar))
+            {
+                ModelState.AddModelError(string.Empty, "Todos los campos son requeridos");
+                return View();
+            }
+
+            if (passwordNueva != passwordConfirmar)
+            {
+                ModelState.AddModelError(string.Empty, "Las contraseñas no coinciden");
+                return View();
+            }
+
+            if (passwordNueva.Length < 6)
+            {
+                ModelState.AddModelError(string.Empty, "La contraseña debe tener al menos 6 caracteres");
+                return View();
+            }
+
+            try
+            {
+                // Obtener el ID del usuario desde los claims
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int userId))
+                {
+                    _logger.LogError("No se pudo obtener el ID del usuario autenticado");
+                    ModelState.AddModelError(string.Empty, "Error al obtener datos del usuario");
+                    return View();
+                }
+
+                // Obtener el usuario de la BD
+                var usuario = await _context.Usuarios.FindAsync(userId);
+                if (usuario == null)
+                {
+                    _logger.LogWarning($"Usuario con ID {userId} no encontrado");
+                    return RedirectToAction("Login");
+                }
+
+                // Verificar que la contraseña actual sea correcta
+                if (!_autenticacionService.VerificarPassword(passwordActual, usuario.Password))
+                {
+                    _logger.LogWarning($"Intento fallido de cambio de contraseña obligatorio para usuario {usuario.UserName}");
+                    ModelState.AddModelError(string.Empty, "La contraseña actual es incorrecta");
+                    return View();
+                }
+
+                // Actualizar la contraseña
+                usuario.Password = _autenticacionService.HashearPassword(passwordNueva);
+                usuario.DebeCambiarPassword = false;
+
+                _context.Usuarios.Update(usuario);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation($"Usuario {usuario.UserName} cambió su contraseña obligatoria");
+
+                // Redirigir al home
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al cambiar contraseña obligatoria");
+                ModelState.AddModelError(string.Empty, "Error al procesar el cambio de contraseña");
+                return View();
+            }
         }
 
         public IActionResult Denegado()
