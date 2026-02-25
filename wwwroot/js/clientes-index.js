@@ -117,6 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var emailEditarValido = true;
 
     modalEditarCliente.addEventListener('show.bs.modal', function (event) {
+        console.log('📂 Modal EDITAR ABIERTO - Inicializando autocompletado Georef');
+        
         var button = event.relatedTarget;
 
         var clienteId = button.getAttribute('data-cliente-id');
@@ -160,6 +162,18 @@ document.addEventListener('DOMContentLoaded', function() {
         errorEmailEditar.style.display = 'none';
         editClienteEmail.classList.remove('is-invalid');
         emailEditarValido = true;
+
+        // Inicializar autocompletado de Georef para editar cliente
+        if (typeof inicializarGeorefAutocomplete === 'function') {
+            console.log('✅ inicializarGeorefAutocomplete es una función');
+            inicializarGeorefAutocomplete(
+                'editClienteCodigoPostal',
+                'editClienteLocalidad',
+                'editClienteProvincia'
+            );
+        } else {
+            console.error('❌ inicializarGeorefAutocomplete NO ES UNA FUNCIÓN');
+        }
     });
 
     editClienteEmail.addEventListener('change', function() {

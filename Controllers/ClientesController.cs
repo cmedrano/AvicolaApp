@@ -12,11 +12,18 @@ namespace AvicolaApp.Controllers
     public class ClientesController : Controller
     {
         private readonly IClienteService _clienteService;
+        private readonly ILocalidadPostalService _localidadPostalService;
+        private readonly IProvinciaService _provinciaService;
         private const int PageSize = 10;
 
-        public ClientesController(IClienteService clienteService)
+        public ClientesController(
+            IClienteService clienteService,
+            ILocalidadPostalService localidadPostalService,
+            IProvinciaService provinciaService)
         {
             _clienteService = clienteService;
+            _localidadPostalService = localidadPostalService;
+            _provinciaService = provinciaService;
         }
 
         public async Task<IActionResult> Index(int page = 1, string? searchNombre = null, string? searchFantasia = null)
@@ -201,6 +208,60 @@ namespace AvicolaApp.Controllers
             }
 
             return Json(new { valido = true });
+        }
+
+        [HttpGet(Name = "ObtenerLocalidadPorCodigoPostal")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ObtenerLocalidadPorCodigoPostal(string codigoPostal)
+        {
+            if (string.IsNullOrWhiteSpace(codigoPostal))
+            {
+                return Json(new { success = false, mensaje = "Código postal inválido" });
+            }
+
+            try
+            {
+                var cpLimpio = System.Text.RegularExpressions.Regex.Replace(codigoPostal, @"\D", "");
+
+                if (cpLimpio.Length != 4)
+                {
+                    return Json(new { success = false, mensaje = "El código postal debe tener 4 dígitos" });
+                }
+
+                // Buscar en la base de datos local
+                var localidades = await _localidadPostalService.ObtenerPorCodigoPostalAsync(cpLimpio);
+
+                if (localidades == null || localidades.Count == 0)
+                {
+                    return Json(new { success = false, mensaje = "No se encontraron localidades para este código postal" });
+                }
+
+                // Obtener nombre de provincia desde ProvinciaService (O(1))
+                var idProvincia = localidades.FirstOrDefault()?.IdProvincia;
+                var provincia = _provinciaService.GetNombreProvincia(idProvincia);
+                
+                var localidadesList = localidades
+                    .Select(x => x.Localidad)
+                    .Where(x => !string.IsNullOrWhiteSpace(x))
+                    .Distinct()
+                    .ToList();
+
+                if (localidadesList.Count == 0)
+                {
+                    return Json(new { success = false, mensaje = "No se encontraron localidades para este código postal" });
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    provincia = provincia,
+                    localidades = localidadesList
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, mensaje = $"Error: {ex.Message}" });
+            }
         }
     }
 }

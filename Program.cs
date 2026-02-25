@@ -18,12 +18,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Registrar Repositorios
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+builder.Services.AddScoped<ILocalidadPostalRepository, LocalidadPostalRepository>();
 
 // Registrar Servicios
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IAutenticacionService, AutenticacionService>();
+builder.Services.AddScoped<ILocalidadPostalService, LocalidadPostalService>();
+builder.Services.AddSingleton<IProvinciaService, ProvinciaService>();
 builder.Services.AddMemoryCache();
 
 // Configurar Autenticación con Cookies

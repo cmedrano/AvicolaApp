@@ -24,7 +24,6 @@
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">CATEGORÍA</label>
                         <select name="Categoria" class="form-select bg-light border-0 rounded-3 py-2">
-                            <option value="">Seleccione una categoría...</option>
                             @foreach (var categoria in categorias)
                             {
                                 <option value="@categoria">@categoria</option>
@@ -34,7 +33,6 @@
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">CONDICION DE VENTA</label>
                         <select name="CondicionDeVenta" class="form-select bg-light border-0 rounded-3 py-2">
-                            <option value="">Seleccione una condicion de venta...</option>
                             @foreach (var condiciondeventa in condicionesdeventa)
                             {
                                 <option value="@condiciondeventa">@condiciondeventa</option>
@@ -60,21 +58,19 @@
                         <label class="form-label small fw-bold text-secondary">DOMICILIO</label>
                         <input type="text" name="Domicilio" class="form-control bg-light border-0 rounded-3 py-2">
                     </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">LOCALIDAD</label>
-                            <input type="text" name="Localidad" class="form-control bg-light border-0 rounded-3 py-2">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">PROVINCIA</label>
-                            <input type="text" name="Provincia" class="form-control bg-light border-0 rounded-3 py-2">
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">CÓDIGO POSTAL</label>
+                        <input type="text" name="CodigoPostal" id="inputCodigoPostalNuevo" class="form-control bg-light border-0 rounded-3 py-2" placeholder="Ej: 1900">
                     </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-12">
-                            <label class="form-label small fw-bold text-secondary">CÓDIGO POSTAL</label>
-                            <input type="text" name="CodigoPostal" class="form-control bg-light border-0 rounded-3 py-2">
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">LOCALIDAD</label>
+                        <select name="Localidad" id="inputLocalidadNueva" class="form-select bg-light border-0 rounded-3 py-2" required>
+                            <option value="">Seleccione una localidad...</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">PROVINCIA</label>
+                            <input type="text" name="Provincia" id="inputProvinciaNueva" class="form-control bg-light border-0 rounded-3 py-2" readonly>
                     </div>
                     <div class="row g-3 mb-3">
                         <div class="col-6">
@@ -112,4 +108,5 @@
     </div>
 </div>
 
+<script src="~/js/georef-autocomplete.js"></script>
 <script src="~/js/modal-nuevo-cliente.js"></script>

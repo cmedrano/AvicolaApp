@@ -24,5 +24,6 @@ namespace AvicolaApp.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Rol> Roles { get; set; }
+        public DbSet<LocalidadPostal> localidades_postales { get; set; }
     }
 }

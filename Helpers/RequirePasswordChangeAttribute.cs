@@ -5,10 +5,6 @@ using System.Security.Claims;
 
 namespace AvicolaApp.Helpers
 {
-    /// <summary>
-    /// Atributo que verifica si el usuario debe cambiar contraseña
-    /// Si es así, lo redirige a la pantalla de cambio obligatorio
-    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class RequirePasswordChangeAttribute : Attribute, IAsyncActionFilter
     {

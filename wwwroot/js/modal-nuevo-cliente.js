@@ -49,10 +49,24 @@ document.addEventListener('DOMContentLoaded', function() {
     var modalNuevoCliente = document.getElementById('modalNuevoCliente');
     if (modalNuevoCliente) {
         modalNuevoCliente.addEventListener('show.bs.modal', function() {
+            console.log('?? Modal NUEVO CLIENTE ABIERTO - Inicializando autocompletado');
+            
             formNuevoCliente.reset();
             emailValido = true;
             errorEmailNuevo.style.display = 'none';
             inputEmailNuevo.classList.remove('is-invalid');
+
+            // Inicializar autocompletado de Georef para crear nuevo cliente
+            if (typeof inicializarGeorefAutocomplete === 'function') {
+                console.log('? inicializarGeorefAutocomplete es una función');
+                inicializarGeorefAutocomplete(
+                    'inputCodigoPostalNuevo',
+                    'inputLocalidadNueva',
+                    'inputProvinciaNueva'
+                );
+            } else {
+                console.error('? inicializarGeorefAutocomplete NO ES UNA FUNCIÓN');
+            }
         });
     }
 
