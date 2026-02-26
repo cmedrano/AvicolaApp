@@ -74,6 +74,7 @@ function createLocalidadSelect(inputLocalidad, localidades) {
     // Option placeholder
     var placeholder = document.createElement('option');
     placeholder.value = '';
+    placeholder.textContent = 'Seleccionar localidad...';
     select.appendChild(placeholder);
 
     localidades.forEach(function (loc) {
@@ -82,6 +83,12 @@ function createLocalidadSelect(inputLocalidad, localidades) {
         opt.textContent = loc;
         select.appendChild(opt);
     });
+
+    // Preseleccionar la primera opción (índice 1 porque 0 es el placeholder)
+    if (localidades.length > 0) {
+        select.selectedIndex = 1;
+        inputLocalidad.value = localidades[0];
+    }
 
     // Cuando el usuario elige, actualizar el inputLocalidad
     select.addEventListener('change', function () {
@@ -139,7 +146,7 @@ function obtenerLocalidadDesdeCodigoPostal(codigoPostal, inputLocalidad, inputPr
             if (data.success) {
                 console.log('? ÉXITO - Provincia:', data.provincia);
                 inputProvincia.value = data.provincia || '';
-                inputProvincia.classList.add('is-valid');
+                //inputProvincia.classList.add('is-valid');
 
                 // Si la API devolvió un array de localidades
                 if (Array.isArray(data.localidades) && data.localidades.length > 1) {
@@ -151,12 +158,12 @@ function obtenerLocalidadDesdeCodigoPostal(codigoPostal, inputLocalidad, inputPr
                     // Un solo resultado
                     removeLocalidadSelectIfExists(inputLocalidad);
                     inputLocalidad.value = data.localidades[0] || '';
-                    inputLocalidad.classList.add('is-valid');
+                    //inputLocalidad.classList.add('is-valid');
                 } else if (data.localidad) {
                     // compatibilidad con respuesta antigua que devolvía 'localidad'
                     removeLocalidadSelectIfExists(inputLocalidad);
                     inputLocalidad.value = data.localidad || '';
-                    inputLocalidad.classList.add('is-valid');
+                    //inputLocalidad.classList.add('is-valid');
                 } else {
                     removeLocalidadSelectIfExists(inputLocalidad);
                     inputLocalidad.value = '';

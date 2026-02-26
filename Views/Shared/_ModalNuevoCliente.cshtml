@@ -4,104 +4,117 @@
 }
 
 <div class="modal fade" id="modalNuevoCliente" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content border-0 shadow-lg rounded-4">
-            <div class="modal-header text-white" style="background-color: #6f42c1; color: white;">
+            <div class="modal-header text-white border-0" style="background-color: #6f42c1;">
                 <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Crear Nuevo Cliente</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
             <form action="@Url.Action("GuardarCliente", "Clientes")" method="post" id="formNuevoCliente">
                 <div class="modal-body p-4 bg-white">
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">NOMBRE</label>
-                        <input type="text" name="Nombre" class="form-control bg-light border-0 rounded-3 py-2" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">NOMBRE FANTASÍA</label>
-                        <input type="text" name="Fantasia" class="form-control bg-light border-0 rounded-3 py-2">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">CATEGORÍA</label>
-                        <select name="Categoria" class="form-select bg-light border-0 rounded-3 py-2">
-                            @foreach (var categoria in categorias)
-                            {
-                                <option value="@categoria">@categoria</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">CONDICION DE VENTA</label>
-                        <select name="CondicionDeVenta" class="form-select bg-light border-0 rounded-3 py-2">
-                            @foreach (var condiciondeventa in condicionesdeventa)
-                            {
-                                <option value="@condiciondeventa">@condiciondeventa</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">TELÉFONO</label>
-                            <input type="text" name="Telefono" class="form-control bg-light border-0 rounded-3 py-2">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-secondary mb-3" style="color: #6f42c1;">DATOS BÁSICOS</h6>
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">NOMBRE</label>
+                                    <input type="text" name="Nombre" class="form-control bg-light border-0 rounded-3 py-2" required placeholder="Nombre completo">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">NOMBRE FANTASÍA</label>
+                                    <input type="text" name="Fantasia" class="form-control bg-light border-0 rounded-3 py-2" placeholder="Nombre comercial">
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold text-secondary mb-3 mt-4" style="color: #6f42c1;">CATEGORIZACIÓN</h6>
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">CATEGORÍA</label>
+                                    <select name="Categoria" class="form-select bg-light border-0 rounded-3 py-2">
+                                        @foreach (var cat in categorias)
+                                        {
+                                            <option value="@cat">@cat</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">CONDICIÓN DE VENTA</label>
+                                    <select name="CondicionDeVenta" class="form-select bg-light border-0 rounded-3 py-2">
+                                        @foreach (var cond in condicionesdeventa)
+                                        {
+                                            <option value="@cond">@cond</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold text-secondary mb-3 mt-4" style="color: #6f42c1;">DOCUMENTOS</h6>
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">DNI</label>
+                                    <input type="text" name="DNI" class="form-control bg-light border-0 rounded-3 py-2">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">CUIT</label>
+                                    <input type="text" name="CUIT" class="form-control bg-light border-0 rounded-3 py-2">
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">CELULAR</label>
-                            <input type="text" name="Celular" class="form-control bg-light border-0 rounded-3 py-2">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">EMAIL</label>
-                        <input type="email" name="Email" id="inputEmailNuevo" class="form-control bg-light border-0 rounded-3 py-2">
-                        <div id="errorEmailNuevo" class="text-danger small mt-1" style="display: none;"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">DOMICILIO</label>
-                        <input type="text" name="Domicilio" class="form-control bg-light border-0 rounded-3 py-2">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">CÓDIGO POSTAL</label>
-                        <input type="text" name="CodigoPostal" id="inputCodigoPostalNuevo" class="form-control bg-light border-0 rounded-3 py-2" placeholder="Ej: 1900">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">LOCALIDAD</label>
-                        <select name="Localidad" id="inputLocalidadNueva" class="form-select bg-light border-0 rounded-3 py-2" required>
-                            <option value="">Seleccione una localidad...</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                            <label class="form-label small fw-bold text-secondary">PROVINCIA</label>
-                            <input type="text" name="Provincia" id="inputProvinciaNueva" class="form-control bg-light border-0 rounded-3 py-2" readonly>
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">DNI</label>
-                            <input type="text" name="DNI" class="form-control bg-light border-0 rounded-3 py-2">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">CUIT</label>
-                            <input type="text" name="CUIT" class="form-control bg-light border-0 rounded-3 py-2">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="OperacionesContado" id="OperacionesContado" value="true">
-                            <label class="form-check-label" for="OperacionesContado">
-                                Operaciones al contado
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="InhabilitadoFacturar" id="InhabilitadoFacturar" value="true">
-                            <label class="form-check-label" for="InhabilitadoFacturar">
-                                Inhabilitado para facturar
-                            </label>
+
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-secondary mb-3" style="color: #6f42c1;">CONTACTO/UBICACIÓN</h6>
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">TELÉFONO</label>
+                                    <input type="text" name="Telefono" class="form-control bg-light border-0 rounded-3 py-2">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">CELULAR</label>
+                                    <input type="text" name="Celular" class="form-control bg-light border-0 rounded-3 py-2">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-secondary">EMAIL</label>
+                                    <input type="email" name="Email" id="inputEmailNuevo" class="form-control bg-light border-0 rounded-3 py-2">
+                                    <div id="errorEmailNuevo" class="text-danger small mt-1" style="display: none;"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">DOMICILIO</label>
+                                    <input type="text" name="Domicilio" class="form-control bg-light border-0 rounded-3 py-2">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">CÓDIGO POSTAL</label>
+                                    <input type="text" name="CodigoPostal" id="inputCodigoPostalNuevo" class="form-control bg-light border-0 rounded-3 py-2">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">LOCALIDAD</label>
+                                    <select name="Localidad" id="inputLocalidadNueva" class="form-select bg-light border-0 rounded-3 py-2" required>
+                                        <option value="">Seleccione...</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-secondary">PROVINCIA</label>
+                                    <input type="text" name="Provincia" id="inputProvinciaNueva" class="form-control bg-light border-0 rounded-3 py-2" readonly>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="OperacionesContado" id="OperacionesContado" value="true">
+                                    <label class="form-check-label" for="OperacionesContado">Operaciones al contado</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="InhabilitadoFacturar" id="InhabilitadoFacturar" value="true">
+                                    <label class="form-check-label" for="InhabilitadoFacturar">Inhabilitado para facturar</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-0 pe-4 pb-4 bg-white rounded-bottom-4 d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-light text-secondary rounded-pill px-4 fw-bold hover-danger shadow-sm border-0" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn rounded-pill px-4 fw-bold shadow hover-scale" style="background-color: #6f42c1; color: white;">Guardar</button>
+
+                <div class="modal-footer border-0 pe-4 pb-4 bg-white rounded-bottom-4">
+                    <button type="button" class="btn btn-light text-secondary rounded-pill px-4 fw-bold border-0" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn rounded-pill px-4 fw-bold shadow hover-scale" style="background-color: #6f42c1; color: white;">Registrar Cliente</button>
                 </div>
             </form>
         </div>
